@@ -14,6 +14,9 @@ define('ROOT_PATH', dirname(__FILE__) . '/../');
 require ROOT_PATH . 'vendor/autoload.php';
 require ROOT_PATH . 'lib/config.php';
 require ROOT_PATH . 'lib/func.php';
+require ROOT_PATH . 'lib/redis.php';
+require ROOT_PATH . 'lib/mysql.php';
+
 
 // system show
 // $config['displayErrorDetails'] = true;
@@ -50,10 +53,14 @@ $app->group('/', function () use ($app) {
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
         
+        
+        
         return $this->view->render($response, "/index.php", $args);
     })->setName('index');
-    
+      
 })->add(AuthQuery::class);
+
+// add other group list
 
 $app->run();
 

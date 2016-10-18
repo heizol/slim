@@ -18,10 +18,10 @@
 				$this->_pass	= 'Kuaishouduobao123';
 				$this->_database = 'kuaishouduobao';
 			} else {
-				$this->_server  = '192.168.99.100';
+				$this->_server  = 'localhost';
 				$this->_port    = '3306';
 				$this->_user	= 'root';
-				$this->_pass	= 'iamchaichai';
+				$this->_pass	= 'root';
 				$this->_database = 'wangyiyungou';
 			}
 
