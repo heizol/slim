@@ -42,7 +42,7 @@ $app = new Slim\App($container);
 $app->add(new Slim\Csrf\Guard);
 	
 $app->group('/', function () use ($app) {
-    $app->get('index', function(Request $request, Response $response, $args) {
+    $app->get('', function(Request $request, Response $response, $args) {
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
         $args['name'] = $route_name;
@@ -66,8 +66,11 @@ class AuthQuery {
         if ($query) {
             parse_str($query, $params);
         }
+        $queryQarams = array();
+        if (!empty($_POST)) {
+            $params = array_merge($params, $_POST);
+        }
         if (!empty($params)) {
-            $queryQarams = array();
             foreach ($params as $key => $val) {
                 $queryQarams[trim(htmlentities($key))] = trim(htmlspecialchars($val));
             }
