@@ -45,6 +45,7 @@ $app = new Slim\App($container);
 $app->add(new Slim\Csrf\Guard);
 	
 $app->group('/', function () use ($app) {
+    // 首页
     $app->get('', function(Request $request, Response $response, $args) {
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
@@ -53,14 +54,60 @@ $app->group('/', function () use ($app) {
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
         
-        
-        
         return $this->view->render($response, "/index.php", $args);
     })->setName('index');
-      
+    // 登录页
+    $app->get('/login', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+        
+        
+        return $this->view->render($response, "/login.php", $args);
+    })->setName('login');
+    
+    $app->post('/login', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+    
+         
+        return $response->withStatus(200)->withHeader('Location', '/myorder');
+    })->setName('login_post');
+    // 我的订单页
+    $app->get('/myorder', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+    
+         
+        return $this->view->render($response, "/myorder.php", $args);
+    })->setName('myorder');
+    
 })->add(AuthQuery::class);
 
 // add other group list
+$app->group('/list', function () use ($app) {
+    $app->get('/car_number', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+        
+        return $this->view->render($response, '/list_cart_number.php', $args);
+    })->setName('list_cart_number');
+})->add(AuthQuery::class);
 
 $app->run();
 
