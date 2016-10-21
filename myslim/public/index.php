@@ -41,8 +41,16 @@ $container['view'] = function ($container) {
     return new Slim\Views\PhpRenderer(TEMPLATE_ROOT);
 };
 
+$container['csrf'] = function ($c) {
+    $guard = new \Slim\Csrf\Guard();
+	$guard->setFailureCallable(function ($request, $response, $next) {
+		$request = $request->withAttribute("csrf_status", false);
+		return $next($request, $response);
+	});
+	return $guard;
+};
 $app = new Slim\App($container);
-$app->add(new Slim\Csrf\Guard);
+
 	
 $app->group('/', function () use ($app) {
     // 首页
@@ -57,18 +65,6 @@ $app->group('/', function () use ($app) {
         return $this->view->render($response, "/index.php", $args);
     })->setName('index');
     // 登录页
-    $app->get('/login', function(Request $request, Response $response, $args) {
-        $route = $request->getAttribute('route');
-        $route_name = $route->getName();
-        $args['name'] = $route_name;
-        $args['params'] = AuthQuery::$queries;
-        $args['nameKey'] =  $request->getAttribute('csrf_name');
-        $args['nameValue'] =  $request->getAttribute('csrf_value');
-        
-        
-        return $this->view->render($response, "/login.php", $args);
-    })->setName('login');
-    
     $app->post('/login', function(Request $request, Response $response, $args) {
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
@@ -98,6 +94,7 @@ $app->group('/', function () use ($app) {
 // add other group list
 $app->group('/list', function () use ($app) {
     $app->get('/car_number', function(Request $request, Response $response, $args) {
+        $request = $request->withAttribute("csrf_result", false);
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
         $args['name'] = $route_name;
@@ -107,6 +104,61 @@ $app->group('/list', function () use ($app) {
         
         return $this->view->render($response, '/list_cart_number.php', $args);
     })->setName('list_cart_number');
+    
+    // ip
+    $app->get('/ip', function(Request $request, Response $response, $args) {
+        $route			= $request->getAttribute('route');
+        $route_name		= $route->getName();
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
+        $args['params'] = AuthQuery::$queries;
+        $nameKey = $this->csrf->getTokenNameKey();
+		$valueKey = $this->csrf->getTokenValueKey();
+
+		// Fetch CSRF token name and value
+		$name  = $request->getAttribute($nameKey);
+		$value = $request->getAttribute($valueKey);
+		$args['csrf_name_key']  = $nameKey;
+		$args['csrf_value_key'] = $valueKey;
+		$args['csrf_name'] = $name;
+		$args['csrf_value'] = $value;
+		
+		print_r($args);
+        return $this->view->render($response, '/list_ip.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_ip');
+    // 查询ip 
+    $app->post('/ip', function(Request $request, Response $response, $args) {
+        $result = array();
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['result'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            $params = AuthQuery::$queries;
+            $result['result'] = 1;
+            $result['msg'] = 'ok';
+            $reg_ip = "/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/";
+            if (empty($params['ip_val']) || ! preg_match($reg_ip, $params['ip_val'])) {
+                $result['result'] = -1;
+                $result['msg'] = 'ip格式不正确，目前仅支持ipv4';
+            } else {
+                $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=139.196.218.165';
+                $msg = baidu_curl_get($url);
+                if (!empty($msg['retData'])) {
+                    $result['ip'] = $msg['retData']['ip'];
+                    $result['country'] = $msg['retData']['country'];
+                    $result['province'] = $msg['retData']['province'];
+                    $result['city'] = $msg['retData']['city'];
+                    $result['district'] = $msg['retData']['district'];
+                    $result['carrier'] = $msg['retData']['carrier'];
+                }
+            }
+        }
+		$response->getBody()->write(json_encode($result));
+		return $response->withHeader(
+			'Content-Type',
+			'application/json'
+		);
+    })->setName('post_ip');
 })->add(AuthQuery::class);
 
 $app->run();
