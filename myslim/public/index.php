@@ -101,9 +101,32 @@ $app->group('/list', function () use ($app) {
         $args['params'] = AuthQuery::$queries;
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
+        $args['title'] = '车辆尾号限行查询';
         
         return $this->view->render($response, '/list_cart_number.php', $args);
     })->setName('list_cart_number');
+    $app->post('car_number', function(Request $request, Response $response, $args) {
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['status'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            $params = AuthQuery::$queries;
+            $today_time = date("Y-m-d", strtotime($params['today_time']));
+            if (empty($params['city_name']) || empty($params['today_time']) || $today_time != $params['today_time']) {
+               $result['status'] = -1;
+               $result['msg'] = '城市名称和时间不能为空';
+            } else {
+                $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
+                $result = baidu_curl_get($url);
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    })->add($app->getContainer()->get('csrf'))->setName('car_number');
+    
     
     // ip
     $app->get('/ip', function(Request $request, Response $response, $args) {
@@ -123,7 +146,7 @@ $app->group('/list', function () use ($app) {
 		$args['csrf_name'] = $name;
 		$args['csrf_value'] = $value;
 		
-		print_r($args);
+		$args['title'] = 'IP地址查询';
         return $this->view->render($response, '/list_ip.php', $args);
     })->add($app->getContainer()->get('csrf'))->setName('list_ip');
     // 查询ip 
@@ -141,7 +164,7 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = 'ip格式不正确，目前仅支持ipv4';
             } else {
-                $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=139.196.218.165';
+                $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=' . $params['ip_val'];
                 $msg = baidu_curl_get($url);
                 if (!empty($msg['retData'])) {
                     $result['ip'] = $msg['retData']['ip'];
@@ -161,6 +184,9 @@ $app->group('/list', function () use ($app) {
     })->setName('post_ip');
 })->add(AuthQuery::class);
 
+/**
+ * @desc 汽车
+ */
 $app->run();
 
 class AuthQuery {

@@ -38,9 +38,12 @@
 	<script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
 	<script src="//cdn.bootcss.com/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
 	<script src="//cdn.bootcss.com/localforage/1.4.2/localforage.min.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 	<script src="/js/site.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$('#datepicker').datepicker({format:"yyyy-mm-dd", lang:"zh-CN"});
 		$(".site-header").attr("style", "");
 	});
 	</script>
