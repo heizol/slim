@@ -79,10 +79,10 @@
 			 <a class="package list-group-item" target="_blank" data-library-name="药品查询" href="/list/drugs">
 			 <div class="row">
 			    <div class="col-md-3">
-			     <h4 class="package-name">药品查询</h4>
+			     <h4 class="package-name">药品信息查询</h4>
 			    </div>
 			    <div class="col-md-9 hidden-xs">
-			     <p class="package-description">通过药品名字直接得到药品说明书、价格、生产厂家、国药准字。</p>
+			     <p class="package-description">通过药品名字直接得到药品说明书、价格、生产厂家、国药准字，对药品具体信息一目了然。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
 			     <span><i class="fa fa-star"></i> 101774</span>

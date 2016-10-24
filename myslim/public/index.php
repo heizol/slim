@@ -93,6 +93,9 @@ $app->group('/', function () use ($app) {
 
 // add other group list
 $app->group('/list', function () use ($app) {
+    /**
+     * @desc 限行查询
+     */
     $app->get('/car_number', function(Request $request, Response $response, $args) {
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
@@ -192,11 +195,63 @@ $app->group('/list', function () use ($app) {
 			'application/json'
 		);
     })->setName('post_ip');
+    
+    /**
+     * @desc 药品查询
+     */
+    $app->get('/drugs', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
+        $args['params'] = AuthQuery::$queries;
+        $nameKey = $this->csrf->getTokenNameKey();
+        $valueKey = $this->csrf->getTokenValueKey();
+    
+        // Fetch CSRF token name and value
+        $name  = $request->getAttribute($nameKey);
+        $value = $request->getAttribute($valueKey);
+        $args['csrf_name_key']  = $nameKey;
+        $args['csrf_value_key'] = $valueKey;
+        $args['csrf_name'] = $name;
+        $args['csrf_value'] = $value;
+    
+        $args['title'] = '药品信息查询';
+        return $this->view->render($response, '/list_drugs.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_drugs');
+    
+    $app->post('/drugs', function(Request $request, Response $response, $args) {
+        $result = array();
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['result'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            $params = AuthQuery::$queries;
+            $name = trim(htmlspecialchars($params['name']));
+            $numberic = trim(htmlspecialchars($params['numberic']));
+            if (empty($name) && empty($numberic)) {
+                $result['result'] = -1;
+                $result['msg'] = '药品名称或者条形码都不能为空';
+            } else {
+                if (!empty($name)) {
+                    $url = 'http://apis.baidu.com/tngou/drug/name?name=' . $name;
+                    $msg = baidu_curl_get($url);
+                } else if (!empty($numberic)) {
+                    $url = 'http://apis.baidu.com/tngou/drug/code?code=' . $numberic;
+                    $msg = baidu_curl_get($url);
+                }
+                $result['result'] = 1;
+                $result['msg'] = $msg;
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    });
 })->add(AuthQuery::class);
 
-/**
- * @desc 药品查询
- */
 $app->run();
 
 class AuthQuery {
