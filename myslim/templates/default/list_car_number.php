@@ -58,7 +58,7 @@
             	<p><span>日期：</span><span id="show_province"></span></p>
             	<p><span>星期：</span><span id="show_city"></span></p>
             	<p><span>限行时间：</span><span id="show_district"></span></p>
-            	<p><span>说明1：</span><span id="show_carrier"></span></p>
+            	<p><span>说明：</span><span id="show_carrier"></span></p>
         	</div>
         </div>
 	</div>
@@ -70,9 +70,21 @@
     $(document).ready(function() {
         $("#search").click(function() {
         	city_name = $("#city_name").val();
-        	today_time = $("#today_time").val();
+        	today_time = $("input[name=today_time]").val();
+        	csrf_name_key = $("#csrf_name").attr('name');
+			csrf_value_key = $("#csrf_value").attr('name');
+			csrf_name = $("#csrf_name").attr('value');
+			csrf_value = $("#csrf_value").attr('value');
+			if (csrf_name == '' || csrf_value == '') {
+				alert('非法提交，刷新重试');
+				return false;
+			}
+			if (today_time == '') {
+				alert('请选择查询时间');
+				return false;
+			}
         	$.ajax({
-        		url: "/list/cart_number",
+        		url: "/list/car_number",
 				method: "post",
 				data: "city_name=" +  city_name + '&today_time=' + today_time,
 				dataType: "json",
@@ -94,7 +106,8 @@
 						$("#show_province").html(result['date']);
 						$("#show_city").html(result['week']);
 						$("#show_district").html(result['time']);
-						$("#show_carrier").html(result['area'] + "&nbsp;&nbsp;" + result['summary'] + "&nbsp;&nbsp;" + result['numberrule']) + "&nbsp;&nbsp;" + result['number']);
+						result_html = result['area'] + "&nbsp;&nbsp;" + result['summary'] + "&nbsp;&nbsp;" + result['numberrule'] + "&nbsp;&nbsp;" + result['number'];
+						$("#show_carrier").html(result_html);
 					}
 			    }
             });

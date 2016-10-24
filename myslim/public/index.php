@@ -94,18 +94,28 @@ $app->group('/', function () use ($app) {
 // add other group list
 $app->group('/list', function () use ($app) {
     $app->get('/car_number', function(Request $request, Response $response, $args) {
-        $request = $request->withAttribute("csrf_result", false);
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
-        $args['name'] = $route_name;
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
         $args['params'] = AuthQuery::$queries;
-        $args['nameKey'] =  $request->getAttribute('csrf_name');
-        $args['nameValue'] =  $request->getAttribute('csrf_value');
+        $nameKey = $this->csrf->getTokenNameKey();
+		$valueKey = $this->csrf->getTokenValueKey();
+
+		// Fetch CSRF token name and value
+		$name  = $request->getAttribute($nameKey);
+		$value = $request->getAttribute($valueKey);
+		$args['csrf_name_key']  = $nameKey;
+		$args['csrf_value_key'] = $valueKey;
+		
+		$args['csrf_name'] = $name;
+		$args['csrf_value'] = $value;
         $args['title'] = '车辆尾号限行查询';
         
-        return $this->view->render($response, '/list_cart_number.php', $args);
-    })->setName('list_cart_number');
-    $app->post('car_number', function(Request $request, Response $response, $args) {
+        return $this->view->render($response, '/list_car_number.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_cart_number');
+    
+    $app->post('/car_number', function(Request $request, Response $response, $args) {
         if (false === $request->getAttribute('csrf_status')) {
             $result['status'] = -1;
             $result['msg'] = 'csrf faild';
@@ -125,13 +135,13 @@ $app->group('/list', function () use ($app) {
             'Content-Type',
             'application/json'
             );
-    })->add($app->getContainer()->get('csrf'))->setName('car_number');
+    })->setName('car_number');
     
     
     // ip
     $app->get('/ip', function(Request $request, Response $response, $args) {
-        $route			= $request->getAttribute('route');
-        $route_name		= $route->getName();
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
         $args['route_name'] = $route_name;
         // CSRF token name and value
         $args['params'] = AuthQuery::$queries;
@@ -185,7 +195,7 @@ $app->group('/list', function () use ($app) {
 })->add(AuthQuery::class);
 
 /**
- * @desc 汽车
+ * @desc 药品查询
  */
 $app->run();
 
