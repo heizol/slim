@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width,initial-scale=1" name="viewport">
-	<title>有技术的便民查询工具</title>
-	<meta content="便民查询工具，有技术的查询...." name="description">
-	<meta content="" name="keywords">
-	<meta content="Bootstrap中文网" name="author">
+	<title><?php echo $title;?></title>
+	<meta content="<?php echo $description;?>" name="description">
+	<meta content="<?php echo $keywords;?>" name="keywords">
+	<meta content="有技术的便民查询工具" name="author">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.css">
 	<link rel="stylesheet" href="http://www.bootcdn.cn/assets/css/site.min.css">
@@ -26,7 +26,7 @@
 	<!-- banner search -->
 	<header class="site-header jumbotron">
 	   <div class="site-nav">
-	    <a href="#about">登录</a> | <a href="#about">我的订单</a>
+	    <a href="/">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/login">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
 	   </div>
 	   <div class="container">
 	    <div class="row">

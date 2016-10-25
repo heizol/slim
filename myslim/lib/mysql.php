@@ -2,27 +2,27 @@
 
 	class CustomDb  {
 
-		private $_server = '192.168.99.100';
-		private $_port  = '3306';
-		private $_user	= 'root';
-		private $_pass	= 'iamchaichai';
-		private $_database = 'wangyiyungou';
+		private $_server = 'localhost';
+		private $_port = '3306';
+		private $_user= 'root';
+		private $_pass = 'root';
+		private $_database = 'tools';
 
 		private $_conn = null;
 
 		public function __construct() {
 			if (ENVIRONMENT == 'PRODUCTION') {
-				$this->_server = 'rm-uf6a42856pfasa0da.mysql.rds.aliyuncs.com';
-				$this->_port  = '3306';
-				$this->_user	= 'kuaishouduobao';
-				$this->_pass	= 'Kuaishouduobao123';
-				$this->_database = 'kuaishouduobao';
+				$this->_server  = 'localhost';
+				$this->_port    = '3306';
+				$this->_user	= 'root';
+				$this->_pass	= 'root';
+				$this->_database = 'tools';
 			} else {
 				$this->_server  = 'localhost';
 				$this->_port    = '3306';
 				$this->_user	= 'root';
 				$this->_pass	= 'root';
-				$this->_database = 'wangyiyungou';
+				$this->_database = 'tools';
 			}
 
 			$this->_initConn();
@@ -30,6 +30,13 @@
 		private function _initConn() {
 
 			$dbh = new PDO('mysql:host='.$this->_server.';port='.$this->_port.';dbname='.$this->_database, $this->_user, $this->_pass, array( PDO::ATTR_PERSISTENT => false, PDO::ATTR_PERSISTENT => true));
+			var_dump($dbh);
+			var_dump($this->_server);
+			var_dump($this->_port);
+			
+			var_dump($this->_database);
+			var_dump($this->_user);
+			var_dump($this->_pass);
 			$stmt = $dbh->prepare("SET NAMES UTF8;SET AUTOCOMMIT=0;");
 			$stmt->execute();
 			
@@ -85,10 +92,13 @@
 			$sql = "INSERT INTO `".$table."` (".(implode(",",$keys)).") VALUES (".(implode(",",$vals)).")";
 
 			$sth = $this->_conn->prepare($sql);
-			$sth->execute($parameters);
-
-
-			return $this->_conn->lastInsertId();
+			var_dump($sth);
+			$result = $sth->execute($parameters);
+            if ($result) {
+			    return $this->_conn->lastInsertId();
+            } else {
+                return false;
+            }
 		}
 
 		/*

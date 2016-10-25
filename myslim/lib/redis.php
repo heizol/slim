@@ -57,7 +57,7 @@
 			return $this->_cluster;
 		}
 		
-		public function setEx(string $key, int $seconds, string $value) {
+		public function setEx($key, $seconds, $value) {
 			if (!$this->_cluster) {
 				$this->_initConn();
 			}			
@@ -201,6 +201,13 @@
 				$this->_initConn();
 			}			
 			return $this->_cluster->client('slave')->zCount( $key, $min, $max);
+		}
+		
+		public function ttl(string $key) {
+		    if (!$this->_cluster) {
+		        $this->_initConn();
+		    }
+		    return $this->_cluster->client('slave')->ttl( $key);
 		}
 
 	}
