@@ -7,6 +7,8 @@ require ROOT_PATH . 'lib/dayu/TopSdk.php';
 $app->group('/member', function () use ($app) {
     // 登录页
     $app->get('/login', function(Request $request, Response $response, $args) {
+        $db = new CustomDb();
+        exit;
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
         $args['route_name'] = $route_name;
@@ -58,7 +60,6 @@ $app->group('/member', function () use ($app) {
                 } else {
                     $sql = 'select * from tools_user where mobile = "'. $params['mobile'] .'"';
                     $_user = $db->GetOne($sql);
-                    var_dump($_user);
                     if (empty($_user)) {
                         $insert_param = array();
                         $insert_param['mobile'] = $params['mobile'];

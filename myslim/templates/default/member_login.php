@@ -5,7 +5,7 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 获取IP地址对应的省、市、区以及运营商名称，每天更新IP地址库。</small></h5>
+          <h5><small> Tips : 只有登录的用户才能查询免费的数据；只有登录的用户且账户余额不等余0的用户才能查询付费的服务。</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">
