@@ -37,7 +37,18 @@
     		    });
     	        var_dump($rowset->toArray());
     	        exit;
+		   
+		      $set = [
+                    'mobile' => '15721490681',
+                    'my_money' => '1.00',
+                    'add_time' => '1477557661',
+                ];
+                $rowset = $artistTable->insert($set);
+                var_dump($rowset);
+                exit;
 		   */
+		    
+		    
 		}
 	}
 
