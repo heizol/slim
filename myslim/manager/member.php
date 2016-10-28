@@ -2,13 +2,25 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+
 require ROOT_PATH . 'lib/dayu/TopSdk.php';
 
 $app->group('/member', function () use ($app) {
     // 登录页
     $app->get('/login', function(Request $request, Response $response, $args) {
+        
+        
         $db = new CustomDb();
+        $artistTable = new TableGateway('tools_user', $db->_adapter);
+        $rowset = $artistTable->select(function (Select $select) {
+            $select->where(['mobile' => '18936309997'])->order('id DESC')->limit(10);
+        });
+        $_user_count = $rowset->count();
+        var_dump($_user_count);
         exit;
+            
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
         $args['route_name'] = $route_name;
@@ -58,9 +70,13 @@ $app->group('/member', function () use ($app) {
                     $result['status'] = -1;
                     $result['msg'] = '验证码不正确，请重新输入';
                 } else {
-                    $sql = 'select * from tools_user where mobile = "'. $params['mobile'] .'"';
-                    $_user = $db->GetOne($sql);
-                    if (empty($_user)) {
+                    $db = new CustomDb();
+                    $artistTable = new TableGateway('tools_user', $db->_adapter);
+                    $rowset = $artistTable->select(function (Select $select) {
+                        $select->where(['mobile' => $params['mobile']])->order('id DESC')->limit(10);
+                    });
+                    $_user_count = $rowset->count();
+                    if ($_user_count == 0) {
                         $insert_param = array();
                         $insert_param['mobile'] = $params['mobile'];
                         $insert_param['my_money'] = '0.00';

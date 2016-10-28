@@ -1,9 +1,7 @@
 <?php
-    use Zend\Db;
-    use Zend\Db\TableGateway\TableGateway;
-    use Zend\Db\Sql\Sql;
+    use Zend\Db\Adapter;
     
-	class CustomDb extends Zend\Db\TableGateway\TableGateway {
+	class CustomDb {
 
 		private $_server = 'localhost';
 		private $_port = '3306';
@@ -11,19 +9,10 @@
 		private $_pass = 'root';
 		private $_database = 'tools';
 
-		private $_db = null;
-        
+		public $_adapter;
+		
 		public function __construct() {
-		    $adapter = new Zend\Db\Adapter\Adapter([
-		        'driver'   => 'PDO',
-		        'database' => $this->_database,
-		        'username' => $this->_user,
-		        'password' => $this->_pass,
-		    ]);
-		    
-		    // or 
-		    
-		    $adapter = new Zend\Db\Adapter\Adapter(array(
+		    $this->_adapter = new Zend\Db\Adapter\Adapter(array(
 		        'driver' => 'pdo',
 		        'dsn' => 'mysql:dbname='. $this->_database .';hostname=' . $this->_server,
 		        'username' => $this->_user,
@@ -33,29 +22,23 @@
 		        ),
 		    ));
 		    
-		    $table = new TableGateway('tools_user', $adapter);
-		    $select = $table->select('id > 1');
-// 		    $select->where('id > 1');
-		    $resultSet = $table->selectWith($select);
-		    $result = $resultSet->toArray();
-		    var_dump($result);
-		    exit;
-		    
-		    $sql = new Sql($adapter);
-		    $select = $sql->select();
-		    $select->from('tools_user');
-		    $select->where(['id' => [11, 12]]);
-		    //sql语句
-		    $selectString = $sql->buildSqlString($select);
-		    
-		    $rSelect = $adapter->selectWith($select);
-		    var_dump($rSelect);
-		    exit;
-		    $statement = $sql->prepareStatementForSqlObject($select);
-		    $results = $statement->execute();
-		    var_dump();
+		    /* eg: 
+    		    $artistTable = new TableGateway('tools_user', $db->_adapter);
+    		    $rowset = $artistTable->select(function (Select $select) {
+    		        $select->where(['mobile' => '18936309997'])->order('id DESC')->limit(10);
+    		        //             $select->where(function ($where) {
+    		        //                 $where->lessThan('id', 15);
+    		        //                 $where->greaterThan('id', 5);
+    		        //                 return $where;
+    		        //             })->order('id DESC')->limit(10);
+    		    
+    		        //                  $select->where->like('mobile', '1%');
+    		        //                  $select->order('id ASC')->limit(2);
+    		    });
+    	        var_dump($rowset->toArray());
+    	        exit;
+		   */
 		}
-        
 	}
 
 
