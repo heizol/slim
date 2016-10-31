@@ -376,7 +376,7 @@ $app->group('/list', function () use ($app) {
                 
                 $insert_columns = array();
                 $insert_columns['product_name'] = '车架号查询';
-                $insert_columns['sales'] = '0.5';
+                $insert_columns['sales'] = '1';
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
@@ -442,7 +442,7 @@ $app->group('/list', function () use ($app) {
                 
                 $insert_columns = array();
                 $insert_columns['product_name'] = '企业投资融资查询';
-                $insert_columns['sales'] = '0.5';
+                $insert_columns['sales'] = '3';
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
