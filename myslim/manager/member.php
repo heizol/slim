@@ -61,16 +61,13 @@ $app->group('/member', function () use ($app) {
                     $result['status'] = -1;
                     $result['msg'] = '验证码不正确，请重新输入';
                 } else {
-                    print_r($params);
                     $db = new CustomDb();
                     $artistTable = new TableGateway('tools_user', $db->_adapter);
-                    $rowset = $artistTable->select(function (Select $select) {
-                        global $params;
+                    $rowset = $artistTable->select(function (Select $select) use ($params){
                         $select->where(['mobile' => $params['mobile']])->order('id DESC');
                     });
                     $_user_count = $rowset->count();
-                    if ($_user_count == 0) {
-                        echo 'hello';exit;
+                    if (empty($_user_count)) {
                         $insert_param = array();
                         $insert_param['mobile'] = $params['mobile'];
                         $insert_param['my_money'] = '0.00';
@@ -83,12 +80,12 @@ $app->group('/member', function () use ($app) {
                         $user_id = $_user[false]['id'];
                         $my_money = $_user[false]['my_money'];
                     }
-                    
                     $_SESSION['user_id'] = $user_id;
                     $_SESSION['mobile'] = $params['mobile'];
                     $_SESSION['my_money'] = $my_money;
-                    $result['status'] = -1;
+                    $result['status'] = 1;
                     $result['msg'] = '登录成功';
+                    unset($params);
                 }
             }
         }
@@ -166,7 +163,38 @@ $app->group('/member', function () use ($app) {
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
     
-         
+        $db = new CustomDb();
+        $artistTable = new TableGateway('tools_order', $db->_adapter);
+        $user_id = $_SESSION['user_id'];
+        if (empty($_SESSION['user_id'])) {
+            return $response->withRedirect('/member/login');;
+        }
+        $rowset = $artistTable->select(function (Select $select) use ($user_id){
+            $select->where(['user_id' => $user_id])->order('id DESC');
+        });
+        $_user_count = $rowset->count();
+        $args['count'] = $_user_count;
+        if (!empty($_user_count)) {
+            $args['list'] = $rowset->toArray();
+        } 
+        $args['title'] = '便民查询用户充值与消费记录';
+        $args['keywords'] = '查询工具，充值中心，消费记录';
+        $args['description'] = '有技术的便民查询工具,如果你想要其它工具，请联系我们,所产生数据都可以得到追踪记录';
         return $this->view->render($response, "/myorder.php", $args);
     })->setName('myorder');
+    
+    // 充值
+    $app->get('/add_money', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+        
+        $args['title'] = '便民查询用户充值中心';
+        $args['keywords'] = '查询工具，充值中心';
+        $args['description'] = '有技术的便民查询工具,如果你想要其它工具，请联系我们,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, "/add_money.php", $args);
+    })->setName('add_money');
 })->add(AuthQuery::class);

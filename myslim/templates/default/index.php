@@ -26,7 +26,18 @@
 	<!-- banner search -->
 	<header class="site-header jumbotron" style="background-image:none;">
 	   <div class="site-nav">
-	    <a href="/">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/login">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
+	    <a href="/">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <?php
+	       if (empty($_SESSION['user_id'])) {
+	    ?>
+	    <a href="/member/login">登录<font color="#FF7F00">(充值：0)</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
+	    <?php 
+	       } else {
+	    ?>
+	    <a href="/member/add_money">VIP用户<font color="#FF7F00">(充值：<?php echo $_SESSION['my_money'];?>)</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
+	    <?php 
+	       }
+	    ?>
 	   </div>
 	   <div class="container">
 	    <div class="row">

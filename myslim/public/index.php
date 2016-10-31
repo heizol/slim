@@ -2,6 +2,9 @@
 session_start();
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Insert;
+use Zend\Db\Sql\Select;
 
 /**
  * Step 1: Require the Slim Framework using Composer's autoloader
@@ -16,7 +19,8 @@ require ROOT_PATH . 'lib/config.php';
 require ROOT_PATH . 'lib/func.php';
 require ROOT_PATH . 'lib/redis.php';
 require ROOT_PATH . 'lib/mysql.php';
-
+require_once ROOT_PATH . "lib/wxpay/lib/WxPay.Api.php";
+require_once ROOT_PATH . 'lib/wxpay/lib/WxPay.Notify.php';
 
 // system show
 // $config['displayErrorDetails'] = true;
@@ -50,8 +54,6 @@ $app->group('/', function () use ($app) {
         $args['params'] = AuthQuery::$queries;
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
-        
-        
         return $this->view->render($response, "/index.php", $args);
     })->setName('index');
     // 留言给我
@@ -88,6 +90,45 @@ $app->group('/', function () use ($app) {
             'application/json'
             );
     })->setName('car_number');
+    
+    // 支付回掉
+    $app->get('call_money_back', function(Request $request, Response $response, $args) {
+        $params = AuthQuery::$queries;
+        if (empty($params['transaction_id'])) {
+            $args['title'] = '充值失败';
+            $args['status'] = -1;
+        } else {
+            $input = new WxPayOrderQuery();
+            $input->SetTransaction_id($params['transaction_id']);
+            $result = WxPayApi::orderQuery($input);
+            Log::DEBUG("query:" . json_encode($result));
+            if(array_key_exists("return_code", $result)
+                && array_key_exists("result_code", $result)
+                && $result["return_code"] == "SUCCESS"
+                && $result["result_code"] == "SUCCESS")
+            {
+                // 订单充值记录
+                $insert_columns = array();
+                $insert_columns['product_name'] = '预消费';
+                $insert_columns['sales'] = '2.00';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 1;
+                $insert_columns['user_id'] = '';
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                return true;
+            }
+            return false;
+        }
+    });
+    
+    // 二维码图片
+    $app->get('qrcode', function(Request $request, Response $response, $args) {
+        $params = AuthQuery::$queries;
+        require_once ROOT_PATH . 'lib/wxpay/example/phpqrcode/phpqrcode.php';
+        $url = urldecode($_GET["data"]);
+        QRcode::png($url);
+        exit;
+    });
 })->add(AuthQuery::class);
 
 // add other group list
@@ -129,6 +170,18 @@ $app->group('/list', function () use ($app) {
                $result['status'] = -1;
                $result['msg'] = '城市名称和时间不能为空';
             } else {
+                if (empty($_SESSION['user_id'])) {
+                    return $response->withRedirect('/member/login');;
+                }
+                
+                $insert_columns = array();
+                $insert_columns['product_name'] = '车辆尾号限行';
+                $insert_columns['sales'] = '0.5';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                
                 $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
                 $result = baidu_curl_get($url);
             }
@@ -179,6 +232,18 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = 'ip格式不正确，目前仅支持ipv4';
             } else {
+                if (empty($_SESSION['user_id'])) {
+                    return $response->withRedirect('/member/login');;
+                }
+                
+                $insert_columns = array();
+                $insert_columns['product_name'] = 'IP真实地址查询';
+                $insert_columns['sales'] = '0.5';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                
                 $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=' . $params['ip_val'];
                 $msg = baidu_curl_get($url);
                 if (!empty($msg['retData'])) {
@@ -237,6 +302,18 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = '药品名称或者条形码都不能为空';
             } else {
+                if (empty($_SESSION['user_id'])) {
+                    return $response->withRedirect('/member/login');;
+                }
+                
+                $insert_columns = array();
+                $insert_columns['product_name'] = '药品查询';
+                $insert_columns['sales'] = '0.5';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                
                 if (!empty($name)) {
                     $url = 'http://apis.baidu.com/tngou/drug/name?name=' . $name;
                     $msg = baidu_curl_get($url);
@@ -293,6 +370,18 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = '车架号长度不能为空或者不等于17位';
             } else {
+                if (empty($_SESSION['user_id'])) {
+                    return $response->withRedirect('/member/login');;
+                }
+                
+                $insert_columns = array();
+                $insert_columns['product_name'] = '车架号查询';
+                $insert_columns['sales'] = '0.5';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                
                 $url = 'http://getVIN.api.juhe.cn/CarManagerServer/getVINFormat?VIN=' . $car_unno . '&key=53da462c4b4f60837aa4dbabba950114';
                 $_temp_result = juhe_curl_get($url);
                 if ($_temp_result['error_code'] != 0) {
@@ -347,6 +436,18 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = '企业名称不能为空';
             } else {
+                if (empty($_SESSION['user_id'])) {
+                    return $response->withRedirect('/member/login');;
+                }
+                
+                $insert_columns = array();
+                $insert_columns['product_name'] = '企业投资融资查询';
+                $insert_columns['sales'] = '0.5';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                OrderDDL::insertOrder('tools_order', $insert_columns);
+                
                 $url = 'http://apis.baidu.com/beijingprismcubetechnology/qmpapi/rongzibyname?company=' . $company_name;
                 $_temp_result = baidu_curl_get($url);
                 if ($_temp_result['error_code'] != 0 ) {
@@ -374,6 +475,10 @@ require ROOT_PATH . 'manager/member.php';
 
 $app->run();
 
+/**
+ * 解析用户参数
+ * @author new
+ */
 class AuthQuery {
     public static $queries = array();
     public static $uid;
@@ -399,5 +504,60 @@ class AuthQuery {
         
         
         return $next($request, $response);
+    }
+}
+
+/**
+ * 写入订单表
+ */
+class OrderDDL {
+    
+    /**
+     * @param string $table 订单表名称
+     * @param array $columns 写入订单参数
+     * @return boolean
+     */
+    static function insertOrder($table = 'tools_order', $params) {
+        $db = new CustomDb();
+        $artistTable = new TableGateway('tools_user', $db->_adapter);
+        $rowset = $artistTable->select(function (Select $select) use ($params){
+            $select->where(['id' => $params['user_id']])->order('id DESC');
+        });
+        $_user = $rowset->toArray();
+        $my_money = $_user[false]['my_money'];
+        
+        // 金额不够
+        if ($my_money <= 0) {
+            header('Loaction: /member/add_money');
+            exit;
+        }
+        
+        // 金额不够本次消费
+        if ($params['is_flag'] == 2 && $params['sales'] > $my_money) {
+            header('Loaction: /member/add_money');
+            exit;
+        }
+        
+        // 消费后结果小于0
+        $mins = $my_money - $params['sales'];
+        if ($params['is_flag'] == 2 && $mins < 0) {
+            header('Loaction: /member/add_money');
+            exit;
+        }
+        
+            
+        $artistTable = new TableGateway($table, $db->_adapter);
+        $artistTable->insert($params);
+        // 记录ID
+        $log_id = $artistTable->getLastInsertValue();
+        $update_params = array();
+        if ($params['is_flag'] == 2) {
+            // 消费时要扣除金额
+            $update_params['my_money'] = $my_money - $params['sales'];
+        } else if ($params['is_flag'] == 1) {
+            $update_params['my_money'] = $my_money + $params['sales'];
+        }
+        $artistTable->update($update_params, ['id' => $_user[false]['id']]);
+        return $log_id;
     }
 }
