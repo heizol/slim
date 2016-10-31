@@ -171,7 +171,7 @@ $app->group('/list', function () use ($app) {
                $result['msg'] = '城市名称和时间不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');;
+                    return $response->withRedirect('/member/login');
                 }
                 
                 $insert_columns = array();
@@ -180,10 +180,14 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
-                OrderDDL::insertOrder('tools_order', $insert_columns);
-                
-                $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
-                $result = baidu_curl_get($url);
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
+                    $result = baidu_curl_get($url);
+                }
             }
         }
         $response->getBody()->write(json_encode($result));
@@ -232,6 +236,7 @@ $app->group('/list', function () use ($app) {
                 $result['result'] = -1;
                 $result['msg'] = 'ip格式不正确，目前仅支持ipv4';
             } else {
+                
                 if (empty($_SESSION['user_id'])) {
                     return $response->withRedirect('/member/login');;
                 }
@@ -242,17 +247,21 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
-                OrderDDL::insertOrder('tools_order', $insert_columns);
-                
-                $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=' . $params['ip_val'];
-                $msg = baidu_curl_get($url);
-                if (!empty($msg['retData'])) {
-                    $result['ip'] = $msg['retData']['ip'];
-                    $result['country'] = $msg['retData']['country'];
-                    $result['province'] = $msg['retData']['province'];
-                    $result['city'] = $msg['retData']['city'];
-                    $result['district'] = $msg['retData']['district'];
-                    $result['carrier'] = $msg['retData']['carrier'];
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'http://apis.baidu.com/apistore/iplookup/iplookup_paid?ip=' . $params['ip_val'];
+                    $msg = baidu_curl_get($url);
+                    if (!empty($msg['retData'])) {
+                        $result['ip'] = $msg['retData']['ip'];
+                        $result['country'] = $msg['retData']['country'];
+                        $result['province'] = $msg['retData']['province'];
+                        $result['city'] = $msg['retData']['city'];
+                        $result['district'] = $msg['retData']['district'];
+                        $result['carrier'] = $msg['retData']['carrier'];
+                    }
                 }
             }
         }
@@ -303,7 +312,7 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '药品名称或者条形码都不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');;
+                    return $response->withRedirect('/member/login');
                 }
                 
                 $insert_columns = array();
@@ -312,17 +321,21 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
-                OrderDDL::insertOrder('tools_order', $insert_columns);
-                
-                if (!empty($name)) {
-                    $url = 'http://apis.baidu.com/tngou/drug/name?name=' . $name;
-                    $msg = baidu_curl_get($url);
-                } else if (!empty($numberic)) {
-                    $url = 'http://apis.baidu.com/tngou/drug/code?code=' . $numberic;
-                    $msg = baidu_curl_get($url);
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    if (!empty($name)) {
+                        $url = 'http://apis.baidu.com/tngou/drug/name?name=' . $name;
+                        $msg = baidu_curl_get($url);
+                    } else if (!empty($numberic)) {
+                        $url = 'http://apis.baidu.com/tngou/drug/code?code=' . $numberic;
+                        $msg = baidu_curl_get($url);
+                    }
+                    $result['result'] = 1;
+                    $result['msg'] = $msg;
                 }
-                $result['result'] = 1;
-                $result['msg'] = $msg;
             }
         }
         $response->getBody()->write(json_encode($result));
@@ -380,16 +393,20 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
-                OrderDDL::insertOrder('tools_order', $insert_columns);
-                
-                $url = 'http://getVIN.api.juhe.cn/CarManagerServer/getVINFormat?VIN=' . $car_unno . '&key=53da462c4b4f60837aa4dbabba950114';
-                $_temp_result = juhe_curl_get($url);
-                if ($_temp_result['error_code'] != 0) {
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
                     $result['result'] = -1;
-                    $result['msg'] = $_temp_result['reason'] ;
+                    $result['msg'] = '用户余额不足';
                 } else {
-                    $result['result'] = 1;
-                    $result['msg'] = $_temp_body = $_temp_result['result']['body']['CARINFO'];
+                    $url = 'http://getVIN.api.juhe.cn/CarManagerServer/getVINFormat?VIN=' . $car_unno . '&key=53da462c4b4f60837aa4dbabba950114';
+                    $_temp_result = juhe_curl_get($url);
+                    if ($_temp_result['error_code'] != 0) {
+                        $result['result'] = -1;
+                        $result['msg'] = $_temp_result['reason'] ;
+                    } else {
+                        $result['result'] = 1;
+                        $result['msg'] = $_temp_body = $_temp_result['result']['body']['CARINFO'];
+                    }
                 }
             }
         }
@@ -446,19 +463,23 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
-                OrderDDL::insertOrder('tools_order', $insert_columns);
-                
-                $url = 'http://apis.baidu.com/beijingprismcubetechnology/qmpapi/rongzibyname?company=' . $company_name;
-                $_temp_result = baidu_curl_get($url);
-                if ($_temp_result['error_code'] != 0 ) {
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
                     $result['result'] = -1;
-                    $result['msg'] = $_temp_result['reason'] ;
-                } else if(!empty($_temp_result['errNum'])){
-                    $result['result'] = -1;
-                    $result['msg'] = '请联系系统管理员,error_code' . $_temp_result['errNum'];
-                }else {
-                    $result['result'] = 1;
-                    $result['msg'] = $_temp_result['result'];
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'http://apis.baidu.com/beijingprismcubetechnology/qmpapi/rongzibyname?company=' . $company_name;
+                    $_temp_result = baidu_curl_get($url);
+                    if ($_temp_result['error_code'] != 0 ) {
+                        $result['result'] = -1;
+                        $result['msg'] = $_temp_result['reason'] ;
+                    } else if(!empty($_temp_result['errNum'])){
+                        $result['result'] = -1;
+                        $result['msg'] = '请联系系统管理员,error_code' . $_temp_result['errNum'];
+                    }else {
+                        $result['result'] = 1;
+                        $result['msg'] = $_temp_result['result'];
+                    }
                 }
         }
     }
@@ -524,28 +545,27 @@ class OrderDDL {
             $select->where(['id' => $params['user_id']])->order('id DESC');
         });
         $_user = $rowset->toArray();
+        if (empty($_user)) {
+            return false;
+        }
         $my_money = $_user[false]['my_money'];
         
         // 金额不够
         if ($my_money <= 0) {
-            header('Loaction: /member/add_money');
-            exit;
+            return false;
         }
         
         // 金额不够本次消费
         if ($params['is_flag'] == 2 && $params['sales'] > $my_money) {
-            header('Loaction: /member/add_money');
-            exit;
+            return false;
         }
         
         // 消费后结果小于0
         $mins = $my_money - $params['sales'];
         if ($params['is_flag'] == 2 && $mins < 0) {
-            header('Loaction: /member/add_money');
-            exit;
+            return false;
         }
         
-            
         $artistTable = new TableGateway($table, $db->_adapter);
         $artistTable->insert($params);
         // 记录ID
@@ -558,6 +578,6 @@ class OrderDDL {
             $update_params['my_money'] = $my_money + $params['sales'];
         }
         $artistTable->update($update_params, ['id' => $_user[false]['id']]);
-        return $log_id;
+        return true;
     }
 }
