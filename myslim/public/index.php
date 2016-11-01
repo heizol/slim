@@ -604,6 +604,7 @@ class OrderDDL {
                 $update_params['my_money'] = $my_money + $params['sales'];
             }
             $artistTable->update($update_params, ['id' => $_user[false]['id']]);
+            $_SESSION['my_money'] = $update_params['my_money'];
             return true;
     	} else {
     		return false;
