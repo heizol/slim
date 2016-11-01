@@ -72,6 +72,7 @@ $app->group('/', function () use ($app) {
         $args['description'] = '有技术的便民查询工具,如果你想要其它工具，请联系我们,所产生数据都可以得到追踪记录';
         return $this->view->render($response, "/more.php", $args);
     })->add($app->getContainer()->get('csrf'))->setName('more');
+    
     $app->post('more', function(Request $request, Response $response, $args) {
         if (false === $request->getAttribute('csrf_status')) {
             $result['status'] = -1;
@@ -107,17 +108,17 @@ $app->group('/', function () use ($app) {
                 && $result["return_code"] == "SUCCESS"
                 && $result["result_code"] == "SUCCESS")
             {
-                $order_num = $result['out_trade_no'];
-                $user_id = substr($order_num, 17);
-                // 订单充值记录
-                $insert_columns = array();
-                $insert_columns['product_name'] = '预消费';
-                $insert_columns['sales'] = '2.00';
-                $insert_columns['add_time'] = time();
-                $insert_columns['is_flag'] = 1;
-                $insert_columns['user_id'] = $user_id;
-                $insert_columns['order_id'] = $order_num;
-                OrderDDL::insertOrder('tools_order', $insert_columns);
+//                 $order_num = $result['out_trade_no'];
+//                 $user_id = substr($order_num, 17);
+//                 // 订单充值记录
+//                 $insert_columns = array();
+//                 $insert_columns['product_name'] = '预消费';
+//                 $insert_columns['sales'] = '2.00';
+//                 $insert_columns['add_time'] = time();
+//                 $insert_columns['is_flag'] = 1;
+//                 $insert_columns['user_id'] = $user_id;
+//                 $insert_columns['order_id'] = $order_num;
+//                 OrderDDL::insertOrder('tools_order', $insert_columns);
 		        $status = 'SUCCESS';
                 $info = 'OK';
             } else {
@@ -133,6 +134,52 @@ $app->group('/', function () use ($app) {
         exit;
     });
     
+    $app->get("get_wxpay", function(Request $request, Response $response, $args) {
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['status'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            $params = AuthQuery::$queries;
+            if (empty($params['order_num'])) {
+                $result['status'] = -1;
+                $result['msg'] = 'order_num is not null';
+            } else {
+                $input = new WxPayOrderQuery();
+                $input->SetOut_trade_no($params['order_num']);
+                $wx_result = WxPayApi::orderQuery($input);
+                if(array_key_exists("return_code", $wx_result)
+                    && array_key_exists("result_code", $wx_result)
+                    && $wx_result["return_code"] == "SUCCESS"
+                    && $wx_result["result_code"] == "SUCCESS")
+                {
+                    $order_num = $wx_result['out_trade_no'];
+                    $user_id = substr($order_num, 17);
+                    // 订单充值记录
+                    $insert_columns = array();
+                    $insert_columns['product_name'] = '预消费';
+                    $insert_columns['sales'] = '2.00';
+                    $insert_columns['add_time'] = time();
+                    $insert_columns['is_flag'] = 1;
+                    $insert_columns['user_id'] = $user_id;
+                    $insert_columns['order_id'] = $order_num;
+                    OrderDDL::insertOrder('tools_order', $insert_columns);
+                    $status = 'SUCCESS';
+                    $info = 'OK';
+                    $result['status'] = 1;
+                    $result['msg'] = 'SUCCESS';
+                } else {
+                    $result['status'] = -1;
+                    $result['msg'] = 'error';
+                }
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    });
+    
     // 二维码图片
     $app->get('qrcode', function(Request $request, Response $response, $args) {
         $params = AuthQuery::$queries;
@@ -140,6 +187,14 @@ $app->group('/', function () use ($app) {
         $url = urldecode($_GET["data"]);
         QRcode::png($url);
         exit;
+    });
+    
+    $app->get('pay_success', function(Request $request, Response $response, $args) {
+        $args['route_name'] = '支付成功';
+        $args['title'] = '车辆尾号限行,车辆尾号限行查询,尾号限行,各城市尾号限行,杭州尾号,天津尾号,上海尾号';
+        $args['keywords'] = '车辆尾号限行,车辆尾号限行查询,尾号限行,各城市尾号限行,杭州尾号,天津尾号,上海尾号';
+        $args['description'] = '有技术的便民查询工具,专业查询车辆尾号限行,车辆尾号限行查询,尾号限行,各城市尾号限行,杭州尾号,天津尾号,上海尾号,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, '/pay_success.php', $args);
     });
 })->add(AuthQuery::class);
 

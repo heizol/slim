@@ -91,7 +91,7 @@
 								}
 								info = result['msg'];
 								$("#show_country").html(info['name']);
-								$("#show_province").html(info['price']);
+								$("#show_province").html(info['price']/100);
 								$("#show_city").html(info['description']);
 								$("#show_district").html(info['tag']);
 								$("#show_carrier").html(info['type']);
