@@ -97,7 +97,6 @@ $app->group('/', function () use ($app) {
         $params = AuthQuery::$queries;
         file_put_contents('/home/wwwroot/slim/myslim/test.txt', $params);
         if (empty($params['transaction_id'])) {
-            return false;
             $status = 'FAIL';
             $info = '交易ID不存在';
         } else {
@@ -121,7 +120,6 @@ $app->group('/', function () use ($app) {
                 $insert_columns['user_id'] = $user_id;
                 OrderDDL::insertOrder('tools_order', $insert_columns);
                 file_put_contents('/home/wwwroot/slim/myslim/test.txt', $insert_columns, FILE_APPEND);
-                return true;
                 $status = 'SUCCESS';
                 $info = 'OK';
             } else {
