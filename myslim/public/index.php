@@ -93,7 +93,7 @@ $app->group('/', function () use ($app) {
     })->setName('car_number');
     
     // 支付回掉
-    $app->get('call_money_back', function(Request $request, Response $response, $args) {
+    $app->map(['get', 'post'], 'call_money_back', function(Request $request, Response $response, $args) {
         $params = AuthQuery::$queries;
         file_put_contents('/home/wwwroot/slim/myslim/test.txt', $params);
         if (empty($params['transaction_id'])) {
