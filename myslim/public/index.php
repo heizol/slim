@@ -150,7 +150,7 @@ $app->group('/', function () use ($app) {
                 if(array_key_exists("return_code", $wx_result)
                     && array_key_exists("result_code", $wx_result)
                     && $wx_result["return_code"] == "SUCCESS"
-                    && $wx_result["result_code"] == "SUCCESS")
+                    && $wx_result["result_code"] == "SUCCESS" && !empty($wx_result['transaction_id']))
                 {
                     $order_num = $wx_result['out_trade_no'];
                     $user_id = substr($order_num, 17);
@@ -163,8 +163,6 @@ $app->group('/', function () use ($app) {
                     $insert_columns['user_id'] = $user_id;
                     $insert_columns['order_id'] = $order_num;
                     OrderDDL::insertOrder('tools_order', $insert_columns);
-                    $status = 'SUCCESS';
-                    $info = 'OK';
                     $result['status'] = 1;
                     $result['msg'] = 'SUCCESS';
                 } else {
