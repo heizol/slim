@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">扫描二维码充值</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">微信二维码充值</label>
             <div class="col-sm-10">
               <?php 
               require_once ROOT_PATH . "lib/wxpay/lib/WxPay.Api.php";
@@ -29,11 +29,11 @@
               $input->SetBody("有技术的便民查询工具");
               $input->SetAttach("信息来源可以考证");
               $input->SetOut_trade_no($order_num);
-              $input->SetTotal_fee("200");
+              $input->SetTotal_fee("20");
               $input->SetTime_start(date("YmdHis"));
               $input->SetTime_expire(date("YmdHis", time() + 600));
 //               $input->SetGoods_tag("test");
-              $input->SetNotify_url("http://www.joinear.com/call_money_back/" . $_SESSION['user_id']);
+              $input->SetNotify_url("http://www.joinear.com/call_money_back");
               $input->SetTrade_type("NATIVE");
               $input->SetProduct_id($product_id);
               $result = $notify->GetPayUrl($input);
@@ -41,6 +41,7 @@
               ?>
               <img alt="模式二扫码支付" src="/qrcode?data=<?php echo urlencode($code_url);?>" style="width:300px;height:300px;"/>
             </div>
+            <div>支付成功后，页面不刷新时，请手动刷新，看账号变化</div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
