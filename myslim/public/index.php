@@ -97,8 +97,9 @@ $app->group('/', function () use ($app) {
         $params = AuthQuery::$queries;
         file_put_contents('/home/wwwroot/slim/myslim/test.txt', $params);
         if (empty($params['transaction_id'])) {
-            $args['title'] = '充值失败';
-            $args['status'] = -1;
+            return false;
+            $status = 'FAIL';
+            $info = '交易ID不存在';
         } else {
             $input = new WxPayOrderQuery();
             $input->SetTransaction_id($params['transaction_id']);
@@ -121,9 +122,19 @@ $app->group('/', function () use ($app) {
                 OrderDDL::insertOrder('tools_order', $insert_columns);
                 file_put_contents('/home/wwwroot/slim/myslim/test.txt', $insert_columns, FILE_APPEND);
                 return true;
+                $status = 'SUCCESS';
+                $info = 'OK';
+            } else {
+                $status = 'FAIL';
+                $info = '交易失败';
             }
-            return false;
         }
+        $xml = "<xml>
+            <return_code><![CDATA[".$status."]]></return_code>
+            <return_msg><![CDATA[".$info."]]></return_msg>
+            </xml>";
+        echo $xml;
+        exit;
     });
     
     // 二维码图片
