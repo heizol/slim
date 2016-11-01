@@ -20,6 +20,7 @@ require ROOT_PATH . 'lib/func.php';
 require ROOT_PATH . 'lib/redis.php';
 require ROOT_PATH . 'lib/mysql.php';
 require_once ROOT_PATH . "lib/wxpay/lib/WxPay.Api.php";
+require_once ROOT_PATH . "lib/wxpay/lib/WxPay.Data.php";
 require_once ROOT_PATH . 'lib/wxpay/lib/WxPay.Notify.php';
 
 // system show
@@ -94,6 +95,7 @@ $app->group('/', function () use ($app) {
     // 支付回掉
     $app->get('call_money_back', function(Request $request, Response $response, $args) {
         $params = AuthQuery::$queries;
+        file_put_contents('/home/wwwroot/slim/myslim/test.txt', $params);
         if (empty($params['transaction_id'])) {
             $args['title'] = '充值失败';
             $args['status'] = -1;
@@ -101,6 +103,7 @@ $app->group('/', function () use ($app) {
             $input = new WxPayOrderQuery();
             $input->SetTransaction_id($params['transaction_id']);
             $result = WxPayApi::orderQuery($input);
+            file_put_contents('/home/wwwroot/slim/myslim/test.txt', $result, FILE_APPEND);
             if(array_key_exists("return_code", $result)
                 && array_key_exists("result_code", $result)
                 && $result["return_code"] == "SUCCESS"
@@ -116,6 +119,7 @@ $app->group('/', function () use ($app) {
                 $insert_columns['is_flag'] = 1;
                 $insert_columns['user_id'] = $user_id;
                 OrderDDL::insertOrder('tools_order', $insert_columns);
+                file_put_contents('/home/wwwroot/slim/myslim/test.txt', $insert_columns, FILE_APPEND);
                 return true;
             }
             return false;
