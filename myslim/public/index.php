@@ -101,19 +101,20 @@ $app->group('/', function () use ($app) {
             $input = new WxPayOrderQuery();
             $input->SetTransaction_id($params['transaction_id']);
             $result = WxPayApi::orderQuery($input);
-            Log::DEBUG("query:" . json_encode($result));
             if(array_key_exists("return_code", $result)
                 && array_key_exists("result_code", $result)
                 && $result["return_code"] == "SUCCESS"
                 && $result["result_code"] == "SUCCESS")
             {
+                $order_num = $result['out_trade_no'];
+                $user_id = substr($order_num, 17);
                 // 订单充值记录
                 $insert_columns = array();
                 $insert_columns['product_name'] = '预消费';
                 $insert_columns['sales'] = '2.00';
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 1;
-                $insert_columns['user_id'] = '';
+                $insert_columns['user_id'] = $user_id;
                 OrderDDL::insertOrder('tools_order', $insert_columns);
                 return true;
             }
