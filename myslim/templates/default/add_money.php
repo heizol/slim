@@ -79,7 +79,7 @@
 	               }
 	           },
 	         success: function(msg) {
-					msg = eval("(" + msg +")");
+					// msg = eval("(" + msg +")");
 					if (msg['status'] == 1) {
 						window.location.href='/pay_success';
 					}
