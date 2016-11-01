@@ -6,7 +6,7 @@
 		private $_server = 'localhost';
 		private $_port = '3306';
 		private $_user= 'root';
-		private $_pass = 'root';
+		private $_pass = 'bobo890812()!';
 		private $_database = 'tools';
 
 		public $_adapter;
