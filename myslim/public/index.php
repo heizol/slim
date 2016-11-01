@@ -94,16 +94,14 @@ $app->group('/', function () use ($app) {
     
     // 支付回掉
     $app->map(['get', 'post'], 'call_money_back', function(Request $request, Response $response, $args) {
-        $params = AuthQuery::$queries;
-        file_put_contents('/home/wwwroot/slim/myslim/test.txt', $params);
-        if (empty($params['transaction_id'])) {
+	$params = AuthQuery::$queries;
+	if (empty($params['transaction_id'])) {
             $status = 'FAIL';
             $info = '交易ID不存在';
         } else {
             $input = new WxPayOrderQuery();
             $input->SetTransaction_id($params['transaction_id']);
             $result = WxPayApi::orderQuery($input);
-            file_put_contents('/home/wwwroot/slim/myslim/test.txt', $result, FILE_APPEND);
             if(array_key_exists("return_code", $result)
                 && array_key_exists("result_code", $result)
                 && $result["return_code"] == "SUCCESS"
@@ -119,8 +117,7 @@ $app->group('/', function () use ($app) {
                 $insert_columns['is_flag'] = 1;
                 $insert_columns['user_id'] = $user_id;
                 OrderDDL::insertOrder('tools_order', $insert_columns);
-                file_put_contents('/home/wwwroot/slim/myslim/test.txt', $insert_columns, FILE_APPEND);
-                $status = 'SUCCESS';
+		$status = 'SUCCESS';
                 $info = 'OK';
             } else {
                 $status = 'FAIL';
@@ -559,32 +556,31 @@ class OrderDDL {
             $select->where(['id' => $params['user_id']])->order('id DESC');
         });
         $_user = $rowset->toArray();
-        if (empty($_user)) {
+	if (empty($_user)) {
             return false;
         }
         $my_money = $_user[false]['my_money'];
         
         // 金额不够
-        if ($my_money <= 0) {
+        if ($my_money <= 0 && $params['is_flag'] == 2) {
             return false;
         }
-        
         // 金额不够本次消费
         if ($params['is_flag'] == 2 && $params['sales'] > $my_money) {
             return false;
         }
-        
         // 消费后结果小于0
         $mins = $my_money - $params['sales'];
         if ($params['is_flag'] == 2 && $mins < 0) {
             return false;
         }
-        
         $artistTable = new TableGateway($table, $db->_adapter);
-        $artistTable->insert($params);
-        // 记录ID
+        $insert_r = $artistTable->insert($params);
+	// 记录ID
         $log_id = $artistTable->getLastInsertValue();
+	if (!empty($log_id)) {
         $update_params = array();
+	$artistTable = new TableGateway('tools_user', $db->_adapter);
         if ($params['is_flag'] == 2) {
             // 消费时要扣除金额
             $update_params['my_money'] = $my_money - $params['sales'];
@@ -593,5 +589,8 @@ class OrderDDL {
         }
         $artistTable->update($update_params, ['id' => $_user[false]['id']]);
         return true;
+	} else {
+		return false;
+	}
     }
 }
