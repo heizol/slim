@@ -116,8 +116,9 @@ $app->group('/', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 1;
                 $insert_columns['user_id'] = $user_id;
+                $insert_columns['order_id'] = $order_num;
                 OrderDDL::insertOrder('tools_order', $insert_columns);
-		$status = 'SUCCESS';
+		        $status = 'SUCCESS';
                 $info = 'OK';
             } else {
                 $status = 'FAIL';
@@ -191,6 +192,9 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
                     $result['result'] = -1;
@@ -258,6 +262,9 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
                     $result['result'] = -1;
@@ -332,6 +339,9 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
                     $result['result'] = -1;
@@ -404,6 +414,9 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
                     $result['result'] = -1;
@@ -474,6 +487,9 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
                 $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
                     $result['result'] = -1;
@@ -556,7 +572,7 @@ class OrderDDL {
             $select->where(['id' => $params['user_id']])->order('id DESC');
         });
         $_user = $rowset->toArray();
-	if (empty($_user)) {
+	    if (empty($_user)) {
             return false;
         }
         $my_money = $_user[false]['my_money'];
@@ -578,19 +594,19 @@ class OrderDDL {
         $insert_r = $artistTable->insert($params);
 	// 记录ID
         $log_id = $artistTable->getLastInsertValue();
-	if (!empty($log_id)) {
-        $update_params = array();
-	$artistTable = new TableGateway('tools_user', $db->_adapter);
-        if ($params['is_flag'] == 2) {
-            // 消费时要扣除金额
-            $update_params['my_money'] = $my_money - $params['sales'];
-        } else if ($params['is_flag'] == 1) {
-            $update_params['my_money'] = $my_money + $params['sales'];
-        }
-        $artistTable->update($update_params, ['id' => $_user[false]['id']]);
-        return true;
-	} else {
-		return false;
-	}
+	   if (!empty($log_id)) {
+           $update_params = array();
+	       $artistTable = new TableGateway('tools_user', $db->_adapter);
+            if ($params['is_flag'] == 2) {
+                // 消费时要扣除金额
+                $update_params['my_money'] = $my_money - $params['sales'];
+            } else if ($params['is_flag'] == 1) {
+                $update_params['my_money'] = $my_money + $params['sales'];
+            }
+            $artistTable->update($update_params, ['id' => $_user[false]['id']]);
+            return true;
+    	} else {
+    		return false;
+    	}
     }
 }
