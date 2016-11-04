@@ -6,7 +6,7 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 提供北京、天津、杭州、成都、兰州、贵阳、南昌、长春、哈尔滨、武汉、上海、深圳等城市的车辆限行时间、区域、尾号等查询。</small></h5>
+          <h5><small> Tips : 提供北京、天津、杭州、成都、兰州、贵阳、南昌、长春、哈尔滨、武汉、上海、深圳等城市的车辆限行时间、区域、尾号等查询。(本工具需收取：<font color="red">0.5 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">

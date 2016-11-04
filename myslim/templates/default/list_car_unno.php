@@ -5,7 +5,7 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 通过VIN(车架号)得到车辆品牌、型号、年款、排量、变速箱类型、发动机型号、几门几座。</small></h5>
+          <h5><small> Tips : 通过VIN(车架号)得到车辆品牌、型号、年款、排量、变速箱类型、发动机型号、几门几座。(本工具需收取：<font color="red">1 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">

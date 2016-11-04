@@ -5,7 +5,7 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 输入企业名称，即可查询出该企业投资历史记录信息 或者 融资历史记录。</small></h5>
+          <h5><small> Tips : 输入企业名称，即可查询出该企业投资历史记录信息 或者 融资历史记录。(本工具需收取：<font color="red">3 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">

@@ -5,7 +5,7 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 通过药品名字直接得到药品说明书、价格、生产厂家、国药准字，对药品具体信息一目了然。</small></h5>
+          <h5><small> Tips : 通过药品名字直接得到药品说明书、价格、生产厂家、国药准字，对药品具体信息一目了然。(本工具需收取：<font color="red">0.5 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">

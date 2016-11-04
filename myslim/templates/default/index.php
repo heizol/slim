@@ -43,7 +43,7 @@
 	    <div class="row">
 	     <div class="col-xs-12">
 	      <h1>有技术的便民查询工具</h1>
-	      <p>稳定、快速、有偿、有技术的便民查询工具<br /><span class="package-amount">共收录了 <strong>5</strong> 个便民查询工具</span></p>
+	      <p>优质、极速、稳定的便民查询工具<br /><span class="package-amount">共收录了 <strong>5</strong> 个便民查询工具</span></p>
 	      <form role="search" class="">
 	       <div class="form-group">
 	        <input type="text" placeholder="搜索工具，例如：车辆" class="form-control search clearable" /> 
@@ -128,6 +128,21 @@
 			    </div>
 			 </div>
 			 </a>
+			 
+			 <a class="package list-group-item" target="_blank" data-library-name="失信黑名单" href="/list/black_man">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">失信黑名单</h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description">国内最大的信用黑名单数据库 <font color="red">提供企业</font>和<font color="red">个人失信、网贷逾期</font>黑名单查询(超过一千万条信贷失信记录)。</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i class="glyphicon glyphicon-usd"></i> 3 元</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <!--  如果没有，可以留言给我们 -->
 			 <a class="package list-group-item" target="_blank" data-library-name="更多" href="/more">
 			 <div class="row">

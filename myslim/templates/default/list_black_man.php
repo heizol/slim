@@ -5,22 +5,31 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 获取IP地址对应的省、市、区以及运营商名称，每天更新IP地址库。(本工具需收取：<font color="red">0.5 元</font>)</small></h5>
+          <h5><small> Tips : 国内最大的信用黑名单数据库提供企业和个人失信、网贷逾期黑名单查询(超过一千万条信贷失信记录)。(本工具需收取：<font color="red">3 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">
           <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">IP地址</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">类型</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="ip" placeholder="如：127.0.0.1" value="127.0.0.1">
-              <span><small>目前支持ipv4,如果需要ipv6，请联系我们...</small></span>
+              <select class="form-control" id="s_type" name="s_type">
+              	<option value="person">个人</option>
+              	<option value="company">企业</option>
+              </select>
             </div>
           </div>
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <input type="hidden" id="csrf_name" name="<?=$csrf_name_key?>" value="<?=$csrf_name?>"/>
-              <input type="hidden" id="csrf_value" name="<?=$csrf_value_key?>" value="<?=$csrf_value?>"/>
-              <button type="button" id ="search" class="btn btn-default">查询</button>
+            <label id="inputEmail3" class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="如：聚念" value="">
+            <span><small>请写全名称</small></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="inputEmail4" class="col-sm-2 control-label">身份证/营业执照编号</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="如：聚念" value="">
+            <span><small>请写全代码</small></span>
             </div>
           </div>
         </form>
@@ -28,11 +37,6 @@
         <div class="container show_result" style="display:none;color:red;font-size:12px">
         	<div class="jumbotron">
             	<h4 id="show_ip"></h4>
-            	<p><span>国家：</span><span id="show_country"></span></p>
-            	<p><span>省份：</span><span id="show_province"></span></p>
-            	<p><span>城市：</span><span id="show_city"></span></p>
-            	<p><span>坐标：</span><span id="show_district"></span></p>
-            	<p><span>服务商／动态IP：</span><span id="show_carrier"></span></p>
         	</div>
         </div>
 	</div>
