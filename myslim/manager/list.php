@@ -6,7 +6,6 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
 
-require ROOT_PATH . 'lib/dayu/TopSdk.php';
 $app->group('/list', function () use ($app) {
     /**
      * @desc 限行查询

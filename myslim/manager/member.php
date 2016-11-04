@@ -7,7 +7,6 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
 
 require ROOT_PATH . 'lib/dayu/TopSdk.php';
-
 $app->group('/member', function () use ($app) {
     // 登录页
     $app->get('/login', function(Request $request, Response $response, $args) {
