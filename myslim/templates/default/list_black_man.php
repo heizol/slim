@@ -19,17 +19,17 @@
             </div>
           </div>
           <div class="form-group">
-            <label id="inputEmail3" class="col-sm-2 control-label">名称</label>
+            <label id="inputEmail3" class="col-sm-2 control-label">个人姓名</label>
             <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" placeholder="如：聚念" value="">
-            <span><small>请写全名称</small></span>
+            <input type="text" class="form-control" id="name" placeholder="" value="">
+            <span><small>请写全</small></span>
             </div>
           </div>
           <div class="form-group">
-            <label id="inputEmail4" class="col-sm-2 control-label">身份证/营业执照编号</label>
+            <label id="inputEmail4" class="col-sm-2 control-label">身份证</label>
             <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" placeholder="如：聚念" value="">
-            <span><small>请写全代码</small></span>
+            <input type="text" class="form-control" id="number" placeholder="" value="">
+            <span><small>请写全</small></span>
             </div>
           </div>
         </form>
@@ -46,6 +46,19 @@
   ?>
   <script type="text/javascript">
 	$(document).ready(function(){
+		$("#s_type").change(function(){
+			_val = $(this).val();
+			if (_val == 'person') {
+				$("#inputEmail3").html("个人姓名");
+				$("#inputEmail4").html("身份证");
+			} else if (_val == 'company') {
+				$("#inputEmail3").html("企业名称");
+				$("#inputEmail4").html("营业执照编码");
+			} else {
+				$("#inputEmail3").html("个人姓名");
+				$("#inputEmail4").html("身份证");
+			}
+		});
 		$("#search").click(function() {
 			$("#ip").attr("readonly", true);
 			csrf_name_key = $("#csrf_name").attr('name');
@@ -56,9 +69,7 @@
 				alert('非法提交，刷新重试');
 				return false;
 			}
-			ip = $.trim($("#ip").val());
-			reg_ip = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/;
-			flag_ip = ip.match(reg_ip);
+			
 			if (flag_ip != undefined && flag_ip != '') {
 				$.ajax({
 						url: "/list/ip",
