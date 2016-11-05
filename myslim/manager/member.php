@@ -132,7 +132,7 @@ $app->group('/member', function () use ($app) {
                     if (!empty($resp)) {
                         $resp = object_to_array($resp);
                         if (!empty($resp['result']['success']) && $resp['result']['err_code'] == 0) {
-                            $redis->setEx('code_' . $params['mobile'], 36400, $code);
+                            $redis->setEx('code_' . $params['mobile'], 300, $code);
                             $result['status'] = 1;
                             $result['msg'] = '已发送';
                         } else {
