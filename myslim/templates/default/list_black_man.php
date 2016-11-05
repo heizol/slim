@@ -108,9 +108,8 @@
 							} else {
 								$(".show_result").show();
 								$("#show_ip").html("[" + $("#name").val() + "] 查询结果如下：");
-								
+								_html = "";
 								$.each(result['data'], function(k, v){
-										_html = "";
 										if (v['duty']) {
 											_html += "<p>法律文书: "+ v['duty'] +"</p>";
 										}
@@ -142,9 +141,9 @@
 											_html += "<p>履行情况: "+ v['performance'] +"</p>";
 										}
 										_html += "<p></p>";
-										$("#show_content").html(_html);
+										
 									});
-								
+								$("#show_content").html(_html);
 							}
 						},
 					    error: function(e)  {
