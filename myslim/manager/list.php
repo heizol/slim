@@ -45,7 +45,13 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '城市名称和时间不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');
+                    $result['status'] = -1;
+                    $result['msg'] = '请先登陆';
+                    $response->getBody()->write(json_encode($result));
+                    return $response->withHeader(
+                        'Content-Type',
+                        'application/json'
+                        );
                 }
 
                 $insert_columns = array();
@@ -59,11 +65,12 @@ $app->group('/list', function () use ($app) {
                 $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 if ($money_result == false) {
-                    $result['result'] = -1;
+                    $result['status'] = -1;
                     $result['msg'] = '用户余额不足';
                 } else {
                     $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
-                    $result = baidu_curl_get($url);
+                    $result['status'] = 0;
+                    $result['result'] = baidu_curl_get($url);
                 }
             }
         }
@@ -115,7 +122,13 @@ $app->group('/list', function () use ($app) {
             } else {
 
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');;
+                    $result['result'] = -1;
+                    $result['msg'] = '请先登陆';
+                    $response->getBody()->write(json_encode($result));
+                    return $response->withHeader(
+                        'Content-Type',
+                        'application/json'
+                        );
                 }
 
                 $insert_columns = array();
@@ -192,7 +205,13 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '药品名称或者条形码都不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');
+                    $result['result'] = -1;
+                    $result['msg'] = '请先登陆';
+                    $response->getBody()->write(json_encode($result));
+                    return $response->withHeader(
+                        'Content-Type',
+                        'application/json'
+                        );
                 }
 
                 $insert_columns = array();
@@ -267,7 +286,13 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '车架号长度不能为空或者不等于17位';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');;
+                    $result['result'] = -1;
+                    $result['msg'] = '请先登陆';
+                    $response->getBody()->write(json_encode($result));
+                    return $response->withHeader(
+                        'Content-Type',
+                        'application/json'
+                        );
                 }
     
                 $insert_columns = array();
@@ -340,7 +365,13 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '企业名称不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
-                    return $response->withRedirect('/member/login');;
+                    $result['result'] = -1;
+                    $result['msg'] = '请先登陆';
+                    $response->getBody()->write(json_encode($result));
+                    return $response->withHeader(
+                        'Content-Type',
+                        'application/json'
+                        );
                 }
     
                 $insert_columns = array();
@@ -410,14 +441,18 @@ $app->group('/list', function () use ($app) {
             $result['msg'] = 'csrf faild';
         }else{
             if (empty($_SESSION['user_id'])) {
-                return $response->withRedirect('/member/login');;
+                $result['result'] = -1;
+                $result['msg'] = '请先登陆';
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader(
+                    'Content-Type',
+                    'application/json'
+                    );
             }
-            
-           
-                $params = AuthQuery::$queries;
-                if (empty($params['name']) || empty($params['number']) || empty($params['s_type'])) {
-                    $result['result'] = -1;
-                    $result['msg'] = '各个数据不能为空';
+            $params = AuthQuery::$queries;
+            if (empty($params['name']) || empty($params['number']) || empty($params['s_type'])) {
+                $result['result'] = -1;
+                $result['msg'] = '各个数据不能为空';
             } else {
                 $insert_columns = array();
                 $insert_columns['product_name'] = '企业投资融资查询';
