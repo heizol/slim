@@ -409,51 +409,71 @@ $app->group('/list', function () use ($app) {
             $result['result'] = -1;
             $result['msg'] = 'csrf faild';
         }else{
-            $params = AuthQuery::$queries;
-            if (empty($params['name']) || empty($params['number']) || empty($params['s_type'])) {
-                $result['result'] = -1;
-                $result['msg'] = '各个数据不能为空';
+            if (empty($_SESSION['user_id'])) {
+                return $response->withRedirect('/member/login');;
+            }
+            
+           
+                $params = AuthQuery::$queries;
+                if (empty($params['name']) || empty($params['number']) || empty($params['s_type'])) {
+                    $result['result'] = -1;
+                    $result['msg'] = '各个数据不能为空';
             } else {
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "http://e.apix.cn/apixcredit/blacklist/dishonest?type=".$params['s_type']."&name=".$params['name']."&cardno=".$params['number'],
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                    CURLOPT_HTTPHEADER => array(
-                        "accept: application/json",
-                        "apix-key: dd55eefa649049316619fb5fa7d152d5",
-                        "content-type: application/json"
-                    ),
-                ));
-                $result['result'] = -1;
-                $get_result = curl_exec($curl);
-                $get_result = json_decode($get_result, true);
-                if (!empty($get_result)) {
-                    if ($get_result['code'] == 1) {
-                        $result['msg'] = '没有失信数据';
-                    } else if ($get_result['code'] == 0) {
-                        $result['msg'] = '查询成功';
-                        $result['result'] = 1;
-                        if (!empty($get_result['data'])) {
-                            $result['data'] = $get_result['data'];
+                $insert_columns = array();
+                $insert_columns['product_name'] = '企业投资融资查询';
+                $insert_columns['sales'] = '3';
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => "http://e.apix.cn/apixcredit/blacklist/dishonest?type=".$params['s_type']."&name=".$params['name']."&cardno=".$params['number'],
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => "",
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 30,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => "GET",
+                        CURLOPT_HTTPHEADER => array(
+                            "accept: application/json",
+                            "apix-key: dd55eefa649049316619fb5fa7d152d5",
+                            "content-type: application/json"
+                        ),
+                    ));
+                    $result['result'] = -1;
+                    $get_result = curl_exec($curl);
+                    $get_result = json_decode($get_result, true);
+                    if (!empty($get_result)) {
+                        if ($get_result['code'] == 1) {
+                            $result['msg'] = '没有失信数据';
+                        } else if ($get_result['code'] == 0) {
+                            $result['msg'] = '查询成功';
+                            $result['result'] = 1;
+                            if (!empty($get_result['data'])) {
+                                $result['data'] = $get_result['data'];
+                            }
+                        } else if ($get_result['code'] == 101) {
+                            $result['msg'] = '身份证号不存在';
+                            
+                        } else if ($get_result['code'] == 104) {
+                            $result['msg'] = 'URL参数错误';
+                            
+                        } else {
+                            $request['msg'] = $get_result['code'];
                         }
-                    } else if ($get_result['code'] == 101) {
-                        $result['msg'] = '身份证号不存在';
-                        
-                    } else if ($get_result['code'] == 104) {
-                        $result['msg'] = 'URL参数错误';
-                        
-                    } else {
-                        $request['msg'] = $get_result['code'];
                     }
-                }
-                $err = curl_error($curl);
-                if (!empty($err)) {
-                    $request['msg'] = $err;
+                    $err = curl_error($curl);
+                    if (!empty($err)) {
+                        $request['msg'] = $err;
+                    }
                 }
             }
         }
