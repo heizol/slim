@@ -84,7 +84,8 @@
 			if (name == "" || number == "") {
 				input_3 = $("#inputEmail3").html();
 				input_4 = $("#inputEmail4").html();
-				alert( input_3 + "或者" ＋ input_4 + "不能为空");
+				_alert =  input_3 + "或者" ＋ input_4 + "不能为空";
+				alert(_alert);
 				return false;
 			} else { 
 				$.ajax({
