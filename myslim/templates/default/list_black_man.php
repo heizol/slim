@@ -82,7 +82,9 @@
 			name = $.trim($("#name").val());
 			number = $.trim($("#number").val());
 			if (name == "" || number == "") {
-				alert($("#inputEmail3").html() + "或者" ＋ $("#inputEmail4").html() + "不能为空");
+				input_3 = $("#inputEmail3").html();
+				input_4 = $("#inputEmail4").html();
+				alert( input_3 + "或者" ＋ input_4 + "不能为空");
 				return false;
 			} else { 
 				$.ajax({
