@@ -32,11 +32,21 @@
             <span><small>请写全</small></span>
             </div>
           </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input type="hidden" id="csrf_name" name="<?=$csrf_name_key?>" value="<?=$csrf_name?>"/>
+              <input type="hidden" id="csrf_value" name="<?=$csrf_value_key?>" value="<?=$csrf_value?>"/>
+              <button type="button" id ="search" class="btn btn-default">查询</button>
+            </div>
+          </div>
         </form>
         </div>
         <div class="container show_result" style="display:none;color:red;font-size:12px">
         	<div class="jumbotron">
             	<h4 id="show_ip"></h4>
+            	<div id="show_content">
+            		
+            	</div>
         	</div>
         </div>
 	</div>
@@ -60,7 +70,6 @@
 			}
 		});
 		$("#search").click(function() {
-			$("#ip").attr("readonly", true);
 			csrf_name_key = $("#csrf_name").attr('name');
 			csrf_value_key = $("#csrf_value").attr('name');
 			csrf_name = $("#csrf_name").attr('value');
@@ -69,12 +78,17 @@
 				alert('非法提交，刷新重试');
 				return false;
 			}
-			
-			if (flag_ip != undefined && flag_ip != '') {
+			s_type = $("#s_type").val();
+			name = $.trim($("#name").val());
+			number = $.trim($("#number").val());
+			if (name == "" || number == "") {
+				alert($("#inputEmail3").html() + "或者" ＋ $("#inputEmail4").html() + "不能为空");
+				return false;
+			} else { 
 				$.ajax({
-						url: "/list/ip",
+						url: "/list/black_man",
 						method: "post",
-						data: "ip_val=" +  ip,
+						data: "s_type=" +  s_type + '&name=' + name + '&number= ' + number,
 						dataType: "json",
 						headers: {
 				               'X-CSRF-Token': {
@@ -83,7 +97,6 @@
 				               }
 				           },
 						success: function(msg) {
-							$("#ip").attr("readonly", false);
 							result = msg;//eval("(" + msg + ")");
 							console.log(result);
 							if (result['result'] == -1) {
@@ -91,16 +104,47 @@
 								return false;
 							} else {
 								$(".show_result").show();
-								$("#show_ip").html("[" + $("#ip").val() + "] 查询结果如下：");
-								$("#show_country").html(result['country']);
-								$("#show_province").html(result['province']);
-								$("#show_city").html(result['city']);
-								$("#show_district").html(result['district']);
-								$("#show_carrier").html(result['carrier']);
+								$("#show_ip").html("[" + $("#name").val() + "] 查询结果如下：");
+								
+								$.each(result['data'], function(k, v){
+										_html = "";
+										if (v['duty']) {
+											_html += "<p>法律文书: "+ v['duty'] +"</p>";
+										}
+										if (v['disrupt_type']) {
+											_html += "<p>被执行人行为: "+ v['disrupt_type'] +"</p>";
+										}
+										if (v['code']) {
+											_html += "<p>案号: "+ v['code'] +"</p>";
+										}
+										if (v['sex']) {
+											_html += "<p>性别: "+ v['sex'] +"</p>";
+										}
+										if (v['pub_time']) {
+											_html += "<p>发布时间: "+ v['pub_time'] +"</p>";
+										}
+										if (v['court']) {
+											_html += "<p>执行法院: "+ v['court'] +"</p>";
+										}
+										if (v['name']) {
+											_html += "<p>姓名: "+ v['name'] +"</p>";
+										}
+										if (v['area']) {
+											_html += "<p>省份: "+ v['area'] +"</p>";
+										}
+										if (v['age']) {
+											_html += "<p>年龄: "+ v['age'] +"</p>";
+										}
+										if (v['performance']) {
+											_html += "<p>履行情况: "+ v['performance'] +"</p>";
+										}
+										_html += "<p></p>";
+										$("#show_content").html(_html);
+									});
+								
 							}
 						},
 					    error: function(e)  {
-					    	$("#ip").attr("readonly", false);
 						    if (e.status == 400) {
 								alert(e.responseText);
 								window.location.reload();

@@ -402,4 +402,65 @@ $app->group('/list', function () use ($app) {
         $args['description'] = '有技术的便民查询工具,专业查询国内最大的信用黑名单数据库提供企业和个人失信、网贷逾期黑名单查询(超过一千万条信贷失信记录),所产生数据都可以得到追踪记录';
         return $this->view->render($response, '/list_black_man.php', $args);
     })->add($app->getContainer()->get('csrf'))->setName('list_ip');
+    
+    $app->post('/black_man', function(Request $request, Response $response, $args) {
+        $result = array();
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['result'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            $params = AuthQuery::$queries;
+            if (empty($params['name']) || empty($params['number']) || empty($params['s_type'])) {
+                $result['result'] = -1;
+                $result['msg'] = '各个数据不能为空';
+            } else {
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "http://e.apix.cn/apixcredit/blacklist/dishonest?type=".$params['s_type']."&name=".$params['name']."&cardno=".$params['number'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "accept: application/json",
+                        "apix-key: dd55eefa649049316619fb5fa7d152d5",
+                        "content-type: application/json"
+                    ),
+                ));
+                $result['result'] = -1;
+                $get_result = curl_exec($curl);
+                $get_result = json_decode($get_result, true);
+                if (!empty($get_result)) {
+                    if ($get_result['code'] == 1) {
+                        $result['msg'] = '没有失信数据';
+                    } else if ($get_result['code'] == 0) {
+                        $result['msg'] = '查询成功';
+                        $result['result'] = 1;
+                        if (!empty($get_result['data'])) {
+                            $result['data'] = $get_result['data'];
+                        }
+                    } else if ($get_result['code'] == 101) {
+                        $result['msg'] = '身份证号不存在';
+                        
+                    } else if ($get_result['code'] == 104) {
+                        $result['msg'] = 'URL参数错误';
+                        
+                    } else {
+                        $request['msg'] = $get_result['code'];
+                    }
+                }
+                $err = curl_error($curl);
+                if (!empty($err)) {
+                    $request['msg'] = $err;
+                }
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    })->setName('list_black_man');
 })->add(AuthQuery::class);
