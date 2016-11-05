@@ -87,7 +87,7 @@
 				_alert =  input_3 + "或者" + input_4 + "不能为空";
 				alert(_alert);
 				return false;
-			} else { 
+			} else {
 				$.ajax({
 						url: "/list/black_man",
 						method: "post",
@@ -155,10 +155,6 @@
 							}
 						}
 					});
-			} else {
-				$("#ip").attr("readonly", false);
-				alert("请输入正确的IP");
-				return false;
 			}
 		});
 	});
