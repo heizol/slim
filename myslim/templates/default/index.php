@@ -143,6 +143,20 @@
 			 </div>
 			 </a>
 			 
+			 <a class="package list-group-item" target="_blank" data-library-name="简繁体火星文转换" href="/list/lang_change">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">简繁体火星文转换</h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description">汉字的简体、繁体、火星文转换 。</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i class="glyphicon glyphicon-usd"></i> 免费</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <!--  如果没有，可以留言给我们 -->
 			 <a class="package list-group-item" target="_blank" data-library-name="更多" href="/more">
 			 <div class="row">

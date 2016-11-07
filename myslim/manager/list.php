@@ -432,7 +432,7 @@ $app->group('/list', function () use ($app) {
         $args['keywords'] = '失信黑名单查询,个人黑名单查询,企业黑名单查询,失信记录,失信报告';
         $args['description'] = '有技术的便民查询工具,专业查询国内最大的信用黑名单数据库提供企业和个人失信、网贷逾期黑名单查询(超过一千万条信贷失信记录),所产生数据都可以得到追踪记录';
         return $this->view->render($response, '/list_black_man.php', $args);
-    })->add($app->getContainer()->get('csrf'))->setName('list_ip');
+    })->add($app->getContainer()->get('csrf'))->setName('list_black_man');
     
     $app->post('/black_man', function(Request $request, Response $response, $args) {
         $result = array();
@@ -455,7 +455,7 @@ $app->group('/list', function () use ($app) {
                 $result['msg'] = '各个数据不能为空';
             } else {
                 $insert_columns = array();
-                $insert_columns['product_name'] = '企业投资融资查询';
+                $insert_columns['product_name'] = '失信黑名单';
                 $insert_columns['sales'] = '3';
                 $insert_columns['add_time'] = time();
                 $insert_columns['is_flag'] = 2;
@@ -518,4 +518,82 @@ $app->group('/list', function () use ($app) {
             'application/json'
             );
     })->setName('list_black_man');
+    
+    // 简繁体火星文转换
+    $app->get('/lang_change', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
+        $args['params'] = AuthQuery::$queries;
+        $nameKey = $this->csrf->getTokenNameKey();
+        $valueKey = $this->csrf->getTokenValueKey();
+    
+        // Fetch CSRF token name and value
+        $name  = $request->getAttribute($nameKey);
+        $value = $request->getAttribute($valueKey);
+        $args['csrf_name_key']  = $nameKey;
+        $args['csrf_value_key'] = $valueKey;
+        $args['csrf_name'] = $name;
+        $args['csrf_value'] = $value;
+    
+        $args['title'] = '简繁体火星文转换';
+        $args['keywords'] = '文字转换,文字转火星文,文字转繁体文,火星文转换,繁体转换';
+        $args['description'] = '有技术的便民查询工具,专业查询文字转换,文字转火星文,文字转繁体文,火星文转换,繁体转换,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, '/lang_change.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_lang_change');
+    $app->post('/lang_change', function(Request $request, Response $response, $args) {
+        $result = array();
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['result'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            if (empty($_SESSION['user_id'])) {
+                $result['result'] = -1;
+                $result['msg'] = '请先登陆';
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader(
+                    'Content-Type',
+                    'application/json'
+                    );
+            }
+            
+            
+            $params = AuthQuery::$queries;
+            if (empty($params['content']) || empty($params['changeType'])) {
+                $result['result'] = -1;
+                $result['msg'] = '各个数据不能为空';
+            } else {
+                $insert_columns = array();
+                $insert_columns['product_name'] = '简繁体火星文转换';
+                $insert_columns['sales'] = 0;
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'http://apis.baidu.com/avatardata/huoxingwen/lookup?dtype=JSON&content='.$params['content'].'&changeType='.$params['changeType'];
+                    $baidu_result = baidu_curl_get($url);
+                    if ($baidu_result['error_code'] == 0) {
+                        $result['result'] = 1;
+                        $result['msg'] = $baidu_result['result'];
+                    } else {
+                        $result['result'] = -1;
+                        $result['msg'] = '该语言不存在';
+                    }
+                }
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    });
 })->add(AuthQuery::class);

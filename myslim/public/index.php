@@ -262,7 +262,7 @@ class OrderDDL {
         $my_money = $_user[false]['my_money'];
         
         // 金额不够
-        if ($my_money <= 0 && $params['is_flag'] == 2) {
+        if ($my_money <= 0 && $params['is_flag'] == 2 && $params['sales'] > 0) {
             return false;
         }
         // 金额不够本次消费
