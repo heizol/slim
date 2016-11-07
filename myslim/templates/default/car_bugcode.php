@@ -5,24 +5,14 @@
   <main id="all-packages" class="packages-list-container">
 	<div class="container">
 		<div class="page-header">
-          <h5><small> Tips : 将简体进行繁体和火星文转换。(本工具需收取：<font color="red">0 元</font>)</small></h5>
+          <h5><small> Tips : 查询车辆故障码，包括故障位置、故障描述、造成影响、和解决建议。(本工具需收取：<font color="red">0.5 元</font>)</small></h5>
        </div>
        <div class="container">
        <form class="form-horizontal" role="form">
           <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">要转化文字</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">Code码</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="content" placeholder="如：莪湜狆國亾">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">要转化成</label>
-            <div class="col-sm-10">
-             	<select class="form-control" name="changeType" id="changeType">
-<!--              		<option value="3">简体</option> -->
-             		<option value="1">繁体</option>
-             		<option value="2">火星文</option>
-             	</select>
+              <input type="text" class="form-control" id="code" placeholder="如：P0108">
             </div>
           </div>
           <div class="form-group">
@@ -37,7 +27,10 @@
         <div class="container show_result" style="display:none;color:red;font-size:12px">
         	<div class="jumbotron">
             	<h4 id="show_ip"></h4>
-            	<p><span>转换后：</span><span id="show_country"></span></p>
+            	<p><span>故障类型:</span><span id="show_1"></span></p>
+            	<p><span>故障描述:</span><span id="show_2"></span></p>
+            	<p><span>出现结果:</span><span id="show_3"></span></p>
+            	<p><span>解决建议:</span><span id="show_4"></span></p>
         	</div>
         </div>
 	</div>
@@ -57,16 +50,15 @@
 				alert('非法提交，刷新重试');
 				return false;
 			}
-			content = $.trim($("#content").val());
-			changeType = $.trim($("#changeType").val());
-			if (content == '' || changeType == '') {
-				alert("请输入内容");
+			code = $.trim($("#code").val());
+			if (content == '') {
+				alert("请输入故障Code码");
 				return false;
 			} else {
 				$.ajax({
-						url: "/list/lang_change",
+						url: "/list/car_bugcode",
 						method: "post",
-						data: "content=" +  content + '&changeType='+changeType,
+						data: "code=" + code,
 						dataType: "json",
 						headers: {
 				               'X-CSRF-Token': {
@@ -82,9 +74,20 @@
 								return false;
 							} else {
 								$(".show_result").show();
-								content = $.trim($("#content").val());
-								$("#show_ip").html("[" + content + "] 查询结果如下：");
-								$("#show_country").html(result['msg']);
+								code = $("#code").val();
+								$("#show_ip").html("[" + code + "] 查询结果如下：");
+								if (result['msg']['type']) {
+									$("#show_1").html(result['msg']['type']);
+								}
+								if (result['msg']['description']) {
+									$("#show_2").html(result['msg']['description']);
+								}
+								if (result['msg']['aftermath']) {
+									$("#show_3").html(result['msg']['aftermath']);
+								}
+								if (result['msg']['remind']) {
+									$("#show_4").html(result['msg']['remind']);
+								}
 							}
 						},
 					    error: function(e)  {

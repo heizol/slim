@@ -596,4 +596,82 @@ $app->group('/list', function () use ($app) {
             'application/json'
             );
     });
+    
+    // 
+    $app->get('/car_bugcode', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
+        $args['params'] = AuthQuery::$queries;
+        $nameKey = $this->csrf->getTokenNameKey();
+        $valueKey = $this->csrf->getTokenValueKey();
+    
+        // Fetch CSRF token name and value
+        $name  = $request->getAttribute($nameKey);
+        $value = $request->getAttribute($valueKey);
+        $args['csrf_name_key']  = $nameKey;
+        $args['csrf_value_key'] = $valueKey;
+        $args['csrf_name'] = $name;
+        $args['csrf_value'] = $value;
+    
+        $args['title'] = '车辆故障码DTC查询';
+        $args['keywords'] = '车辆故障码查询,DTC查询,车辆故障码,车辆故障码大全,车辆故障码提示,汽车故障';
+        $args['description'] = '有技术的便民查询工具,专业查询车辆故障码查询,DTC查询,车辆故障码,车辆故障码大全,车辆故障码,汽车故障提示,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, '/car_bugcode.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_lang_change');
+    $app->post('/car_bugcode', function(Request $request, Response $response, $args) {
+        $result = array();
+        if (false === $request->getAttribute('csrf_status')) {
+            $result['result'] = -1;
+            $result['msg'] = 'csrf faild';
+        }else{
+            if (empty($_SESSION['user_id'])) {
+                $result['result'] = -1;
+                $result['msg'] = '请先登陆';
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader(
+                    'Content-Type',
+                    'application/json'
+                    );
+            }
+    
+    
+            $params = AuthQuery::$queries;
+            if (empty($params['code'])) {
+                $result['result'] = -1;
+                $result['msg'] = '汽车故障码不能为空';
+            } else {
+                $insert_columns = array();
+                $insert_columns['product_name'] = '汽车故障码查询';
+                $insert_columns['sales'] = 0.5;
+                $insert_columns['add_time'] = time();
+                $insert_columns['is_flag'] = 2;
+                $insert_columns['user_id'] = $_SESSION['user_id'];
+                $product_id = date("mdHis");
+                $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+                $insert_columns['order_id'] = $order_num;
+                $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
+                if ($money_result == false) {
+                    $result['result'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.$params['code'];
+                    $baidu_result = baidu_curl_get($url);
+                    if ($baidu_result['showapi_res_code'] == 0) {
+                        $result['result'] = 1;
+                        $result['msg'] = $baidu_result['showapi_res_body'];
+                    } else {
+                        $result['result'] = -1;
+                        $result['msg'] = $baidu_result['showapi_res_error'];
+                    }
+                }
+            }
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+            );
+    });
 })->add(AuthQuery::class);

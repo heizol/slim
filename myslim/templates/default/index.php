@@ -157,6 +157,20 @@
 			 </div>
 			 </a>
 			 
+			 <a class="package list-group-item" target="_blank" data-library-name="车辆故障码DTC查询" href="/list/car_bugcode">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">车辆故障码DTC查询</h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description">查询车辆故障码，包括<font color="red">故障位置、故障描述、造成影响、和解决建议</font>。</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <!--  如果没有，可以留言给我们 -->
 			 <a class="package list-group-item" target="_blank" data-library-name="更多" href="/more">
 			 <div class="row">
