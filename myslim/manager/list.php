@@ -638,6 +638,13 @@ $app->group('/list', function () use ($app) {
     
     
             $params = AuthQuery::$queries;
+            
+            //todo
+            $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.strtoupper($params['code']);
+            $baidu_result = baidu_curl_get($url);
+            print_r($baidu_result);
+            exit;
+            
             if (empty($params['code'])) {
                 $result['result'] = -1;
                 $result['msg'] = '汽车故障码不能为空';
@@ -656,7 +663,7 @@ $app->group('/list', function () use ($app) {
                     $result['result'] = -1;
                     $result['msg'] = '用户余额不足';
                 } else {
-                    $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.$params['code'];
+                    $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.strtoupper($params['code']);
                     $baidu_result = baidu_curl_get($url);
                     if ($baidu_result['showapi_res_code'] == 0) {
                         $result['result'] = 1;

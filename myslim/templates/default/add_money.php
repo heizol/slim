@@ -29,7 +29,7 @@
               $input->SetBody("有技术的便民查询工具");
               $input->SetAttach("信息来源可以考证");
               $input->SetOut_trade_no($order_num);
-              $input->SetTotal_fee("20");
+              $input->SetTotal_fee("200");
               $input->SetTime_start(date("YmdHis"));
               $input->SetTime_expire(date("YmdHis", time() + 600));
 //               $input->SetGoods_tag("test");
