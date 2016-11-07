@@ -580,7 +580,7 @@ $app->group('/list', function () use ($app) {
                 } else {
                     $url = 'http://apis.baidu.com/avatardata/huoxingwen/lookup?dtype=JSON&content='.$params['content'].'&changeType='.$params['changeType'];
                     $baidu_result = baidu_curl_get($url);
-                    if ($baidu_result['error_code'] == 0) {
+                    if (!empty($baidu_result) && $baidu_result['error_code'] == 0) {
                         $result['result'] = 1;
                         $result['msg'] = $baidu_result['result'];
                     } else {
@@ -639,12 +639,6 @@ $app->group('/list', function () use ($app) {
     
             $params = AuthQuery::$queries;
             
-            //todo
-            $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.strtoupper($params['code']);
-            $baidu_result = baidu_curl_get($url);
-            print_r($baidu_result);
-            exit;
-            
             if (empty($params['code'])) {
                 $result['result'] = -1;
                 $result['msg'] = '汽车故障码不能为空';
@@ -663,14 +657,14 @@ $app->group('/list', function () use ($app) {
                     $result['result'] = -1;
                     $result['msg'] = '用户余额不足';
                 } else {
-                    $url = 'http://apis.baidu.com/kyj/getdtc/getdtc?code='.strtoupper($params['code']);
-                    $baidu_result = baidu_curl_get($url);
-                    if ($baidu_result['showapi_res_code'] == 0) {
+                    $url = 'http://getDTC.api.juhe.cn/CarManagerServer/getDTC?code='.strtoupper($params['code']) . '&key=53da462c4b4f60837aa4dbabba950114';
+                    $juhe_result = juhe_curl_get($url);
+                    if (!empty($juhe_result) && $juhe_result['ret_code'] == 0) {
                         $result['result'] = 1;
-                        $result['msg'] = $baidu_result['showapi_res_body'];
+                        $result['msg'] = $baidu_result['result']['body'];
                     } else {
                         $result['result'] = -1;
-                        $result['msg'] = $baidu_result['showapi_res_error'];
+                        $result['msg'] = !empty($baidu_result['ret_msg']) ? $baidu_result['ret_msg'] : '数据获取失败，联系管理员';
                     }
                 }
             }
