@@ -59,19 +59,19 @@
 	<div class="container">
 		<div class="list-group packages">
 			<!--  list -->
-			<a class="package list-group-item" target="_blank" data-library-name="ip" href="/list/ip">
-			 <div class="row">
-			    <div class="col-md-3">
-			     <h4 class="package-name">IP地址查询</h4>
-			    </div>
-			    <div class="col-md-9 hidden-xs">
-			     <p class="package-description">获取IP地址对应的省、市、区以及运营商名称，<font color="red">每天更新IP地址库</font>。</p>
-			    </div>
-			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span>
-			    </div>
-			 </div>
-			 </a>
+<!-- 			<a class="package list-group-item" target="_blank" data-library-name="ip" href="/list/ip"> -->
+<!-- 			 <div class="row"> -->
+<!-- 			    <div class="col-md-3"> -->
+<!-- 			     <h4 class="package-name">IP地址查询</h4> -->
+<!-- 			    </div> -->
+<!-- 			    <div class="col-md-9 hidden-xs"> -->
+<!-- 			     <p class="package-description">获取IP地址对应的省、市、区以及运营商名称，<font color="red">每天更新IP地址库</font>。</p> -->
+<!-- 			    </div> -->
+<!-- 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12"> -->
+<!-- 			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span> -->
+<!-- 			    </div> -->
+<!-- 			 </div> -->
+<!-- 			 </a> -->
 			 <a class="package list-group-item" target="_blank" data-library-name="车辆尾号限行查询" href="/list/car_number">
 			 <div class="row">
 			    <div class="col-md-3">
