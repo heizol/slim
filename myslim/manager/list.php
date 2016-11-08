@@ -657,14 +657,14 @@ $app->group('/list', function () use ($app) {
                     $result['result'] = -1;
                     $result['msg'] = '用户余额不足';
                 } else {
-                    $url = 'http://getDTC.api.juhe.cn/CarManagerServer/getDTC?code='.strtoupper($params['code']) . '&key=53da462c4b4f60837aa4dbabba950114';
+                    $url = 'http://getDTC.api.juhe.cn/CarManagerServer/getDTC?code='.strtoupper($params['code']) . '&key=019d7cc2153802e945957e19afbd62e4';
                     $juhe_result = juhe_curl_get($url);
-                    if (!empty($juhe_result) && $juhe_result['ret_code'] == 0) {
-                        $result['result'] = 1;
-                        $result['msg'] = $baidu_result['result']['body'];
-                    } else {
+                    if ($juhe_result['error_code'] != 0 ) {
                         $result['result'] = -1;
-                        $result['msg'] = !empty($baidu_result['ret_msg']) ? $baidu_result['ret_msg'] : '数据获取失败，联系管理员';
+                        $result['msg'] = $juhe_result['reason'];
+                    } else {
+                        $result['result'] = 1;
+                        $result['msg'] = $juhe_result['result']['body'];
                     }
                 }
             }
