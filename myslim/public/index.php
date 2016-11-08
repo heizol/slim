@@ -61,7 +61,7 @@ $app->group('/', function () use ($app) {
         if (!empty($_SESSION['user_id'])) {
             $db = new CustomDb();
             $artistTable = new TableGateway('tools_user', $db->_adapter);
-            $rowset = $artistTable->select(function (Select $select) use ($_SESSION){
+            $rowset = $artistTable->select(function (Select $select){
                 $select->where(['id' => $_SESSION['user_id']])->order('id DESC');
             });
             $_user = $rowset->toArray();
