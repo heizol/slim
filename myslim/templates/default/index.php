@@ -6,21 +6,20 @@
 	<meta content="width=device-width,initial-scale=1" name="viewport">
 	<title>有技术的便民查询工具</title>
 	<meta content="便民查询工具，有技术的查询工具，查询出都数据都可以得到验证来源 --有技术的便民查询工具" name="description">
-	<meta content="IP地址，尾号限行，车架号查询，药品信息查询，个人信用查询" name="keywords">
+	<meta content="IP地址，尾号限行，车架号查询，药品信息查询，个人信用查询，企业融资查询，车辆故障码" name="keywords">
 	<meta content="有技术的便民查询工具" name="author">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.css">
-	<link rel="stylesheet" href="http://www.bootcdn.cn/assets/css/site.min.css">
+	<link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/bootstrap/font-awesome.css">
+	<link rel="stylesheet" href="/css/site.min.css">
 	<!--[if lt IE 9]>
-    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="/css/bootstrap/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
     <![endif]-->
     <!--[if IE 9]>
-    <script src="http://cdn.bootcss.com/geopattern/1.2.3/js/base64.min.js"></script>
-    <script src="http://cdn.bootcss.com/geopattern/1.2.3/js/typedarray.min.js"></script>
+    <script src="/js/base64.min.js"></script>
     <![endif]-->
-    <link href="http://www.bootcdn.cn/assets/ico/apple-touch-icon-144-precomposed.png" sizes="144x144" rel="apple-touch-icon-precomposed">
-    <link href="http://www.bootcdn.cn/assets/ico/favicon.ico" rel="shortcut icon">
+    <link href="/images/apple-touch-icon-144-precomposed.png" sizes="144x144" rel="apple-touch-icon-precomposed">
+    <link href="/images/favicon.ico" rel="shortcut icon">
 </head>
 <body class="home-template">
 	<!-- banner search -->
