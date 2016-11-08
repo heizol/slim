@@ -42,7 +42,7 @@
 	    <div class="row">
 	     <div class="col-xs-12">
 	      <h1>有技术的便民查询工具</h1>
-	      <p>优质、极速、稳定的便民查询工具<br /><span class="package-amount">共收录了 <strong id ="get_tools_num">5</strong> 个便民查询工具</span></p>
+	      <p>优质、极速、稳定的便民查询工具<br /><span class="package-amount">共收录了 <strong id ="get_tools_num">8</strong> 个便民查询工具</span></p>
 	      <form role="search" class="">
 	       <div class="form-group">
 	        <input type="text" placeholder="搜索工具，例如：车辆" class="form-control search clearable" /> 
@@ -193,7 +193,10 @@
   ?>
   <script type="text/javascript">
 	$(document).ready(function(){
-		package_num = $("a[class=package]").length;
+		package_num = $('a[class="package list-group-item"]').length;
+		if (package_num == 0) {
+			package_num = 8;
+		}
 		$("#get_tools_num").html(package_num);
 	});
 	</script>
