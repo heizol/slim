@@ -45,5 +45,10 @@
 	$(document).ready(function(){
 		$('#datepicker').datepicker({format:"yyyy-mm-dd", lang:"zh-CN"});
 		$(".site-header").attr("style", "");
+		package_num = $('a[class="package list-group-item"]').length;
+		if (package_num == 0) {
+			package_num = 8;
+		}
+		$("#get_tools_num").html(package_num);
 	});
 	</script>

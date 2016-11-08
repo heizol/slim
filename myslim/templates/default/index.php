@@ -191,14 +191,5 @@
   <?php 
   require TEMPLATE_ROOT . '/footer.php';
   ?>
-  <script type="text/javascript">
-	$(document).ready(function(){
-		package_num = $('a[class="package list-group-item"]').length;
-		if (package_num == 0) {
-			package_num = 8;
-		}
-		$("#get_tools_num").html(package_num);
-	});
-	</script>
 </body>
 </html>
