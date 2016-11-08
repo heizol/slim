@@ -11,8 +11,9 @@
      <div class="footer-links col-md-2 col-sm-12">
       <h4>友情链接</h4>
       <ul class="list-unstyled">
-       <li><a target="_blank" href="http://re.qq.com/">腾讯数据中心</a></li>
-       <li><a target="_blank" href="http://www.zhihu.com/">知乎</a></li>
+       <li><a target="_blank" href="javascript:;">中国数据研究中心</a></li>
+       <li><a target="_blank" href="javascript:;">腾讯数据中心</a></li>
+       <li><a target="_blank" href="javascript:;">百度数据中心</a></li>
       </ul>
      </div>
      <div class="footer-techs col-md-3 col-sm-12">
