@@ -29,11 +29,11 @@
 	    <?php
 	       if (empty($_SESSION['user_id'])) {
 	    ?>
-	    <a href="/member/login">登录<font color="#FF7F00">(充值：0)</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
+	    <a href="/member/login">登录<font color="#FF7F00">(余额：0)</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
 	    <?php 
 	       } else {
 	    ?>
-	    <a href="/member/add_money">VIP用户<font color="#FF7F00">(充值：<?php echo $_SESSION['my_money'];?>)</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
+	    <a href="/member/add_money">VIP用户<font color="#FF7F00">(余额：<?php echo $_SESSION['my_money'];?>)[我要充值]</font></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/member/my_order">我的订单</a>
 	    <?php 
 	       }
 	    ?>

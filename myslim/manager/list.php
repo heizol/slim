@@ -502,12 +502,12 @@ $app->group('/list', function () use ($app) {
                             $result['msg'] = 'URL参数错误';
                             
                         } else {
-                            $request['msg'] = $get_result['code'];
+                            $result['msg'] = $get_result['code'];
                         }
                     }
                     $err = curl_error($curl);
                     if (!empty($err)) {
-                        $request['msg'] = $err;
+                        $result['msg'] = $err;
                     }
                 }
             }
