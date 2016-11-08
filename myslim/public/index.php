@@ -58,6 +58,19 @@ $app->group('/', function () use ($app) {
         $args['params'] = AuthQuery::$queries;
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
+        if (!empty($_SESSION['user_id'])) {
+            $db = new CustomDb();
+            $artistTable = new TableGateway('tools_user', $db->_adapter);
+            $rowset = $artistTable->select(function (Select $select) use ($_SESSION){
+                $select->where(['id' => $_SESSION['user_id']])->order('id DESC');
+            });
+            $_user = $rowset->toArray();
+            if (!empty($_user)) {
+                $_SESSION['my_money'] = $_user[false]['my_money'];
+            }
+        }
+        
+        
         return $this->view->render($response, "/index.php", $args);
     })->setName('index');
     // 留言给我
