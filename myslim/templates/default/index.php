@@ -43,7 +43,7 @@
 	    <div class="row">
 	     <div class="col-xs-12">
 	      <h1>有技术的便民查询工具</h1>
-	      <p>优质、极速、稳定的便民查询工具<br /><span class="package-amount">共收录了 <strong>5</strong> 个便民查询工具</span></p>
+	      <p>优质、极速、稳定的便民查询工具<br /><span class="package-amount">共收录了 <strong id ="get_tools_num">5</strong> 个便民查询工具</span></p>
 	      <form role="search" class="">
 	       <div class="form-group">
 	        <input type="text" placeholder="搜索工具，例如：车辆" class="form-control search clearable" /> 
@@ -189,8 +189,14 @@
 	</div>
   </main>
   <!-- footer -->
-   <?php 
+  <?php 
   require TEMPLATE_ROOT . '/footer.php';
   ?>
+  <script type="text/javascript">
+	$(document).ready(function(){
+		package_num = $("a[class=package]").length;
+		$("#get_tools_num").html(package_num);
+	});
+	</script>
 </body>
 </html>
