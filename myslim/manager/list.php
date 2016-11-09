@@ -470,7 +470,7 @@ $app->group('/list', function () use ($app) {
                 } else {
                     $curl = curl_init();
                     curl_setopt_array($curl, array(
-                        CURLOPT_URL => "http://e.apix.cn/apixcredit/blacklist/dishonest?type=".$params['s_type']."&name=".$params['name']."&cardno=".$params['number'],
+                        CURLOPT_URL => "http://e.apix.cn/apixcredit/blacklist/dishonest?type=".$params['s_type']."&name=".trim($params['name'])."&cardno=".trim($params['number']),
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => "",
                         CURLOPT_MAXREDIRS => 10,
@@ -501,6 +501,8 @@ $app->group('/list', function () use ($app) {
                         } else if ($get_result['code'] == 104) {
                             $result['msg'] = 'URL参数错误';
                             
+                        } else if ($get_result['code'] == 102) {
+                            $result['msg'] = '组织机构代码或身份号不存在';
                         } else {
                             $result['msg'] = $get_result['code'];
                         }
