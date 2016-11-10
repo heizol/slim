@@ -212,8 +212,11 @@ $app->group('/', function () use ($app) {
     });
 })->add(AuthQuery::class);
 
-// add other group list
+// 聚合和百度过来的数据
 require ROOT_PATH . 'manager/list.php';
+
+// 京东万象过来的数据
+require ROOT_PATH . 'manager/list_jd.php';
 
 // 用户中心
 require ROOT_PATH . 'manager/member.php';

@@ -13,7 +13,7 @@
             <label for="inputEmail3" class="col-sm-2 control-label">请留言：</label>
             <div class="col-sm-10">
             	<textarea class="form-control" rows="10" name="message" id="message" placeholder="请留言....."></textarea>
-            	<span><small><font color="red">不要忘记留下您的联系方式</font></small></span>
+            	<span><small><font color="red">不要忘记在输入框内留下您的联系方式</font></small></span>
             </div>
           </div>
           <div class="form-group">
@@ -41,7 +41,7 @@
 				alert('非法提交，刷新重试');
 				return false;
 			}
-			message = $.trim($("#message").text());
+			message = $.trim($("#message").val();
 			if (message != '') {
 				$.ajax({
 						url: "/more",

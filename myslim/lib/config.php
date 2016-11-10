@@ -10,3 +10,5 @@ define('MESSAGE_KEY', '23397317');
 define('MESSAGE_SECRET', 'cd513937b03001d73d16cdfb87d68aef');
 define('MESSAGE_URL', 'http://gw.api.taobao.com/router/rest');
 define('MESSAGE_FORMAT', 'json');
+
+define('JD_KEY', '80e41c21390bd924af9cca5297219c33');

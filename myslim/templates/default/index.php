@@ -72,6 +72,20 @@
 <!-- 			    </div> -->
 <!-- 			 </div> -->
 <!-- 			 </a> -->
+			<a class="package list-group-item" target="_blank" data-library-name="婚姻和学历查询" href="/listjd/s_marrid">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">婚姻和学历查询<i class="glyphicon glyphicon-fire" style="color: red;"></i></h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description">查询某个朋友是否已婚、婚姻状态、及学历，只要知道身份证号即可。</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i>¥</i> 5 元</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <a class="package list-group-item" target="_blank" data-library-name="车辆尾号限行查询" href="/list/car_number">
 			 <div class="row">
 			    <div class="col-md-3">
@@ -81,7 +95,7 @@
 			     <p class="package-description">提供<font color="red">北京、天津、杭州、成都、兰州、贵阳、南昌、长春、哈尔滨、武汉、上海、深圳</font>等城市的车辆限行时间、区域、尾号等查询。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span>
+			     <span><i>¥</i> 0.5 元</span>
 			    </div>
 			 </div>
 			 </a>
@@ -95,7 +109,7 @@
 			     <p class="package-description">通过药品名字直接得到药品说明书、价格、生产厂家、国药准字，对药品具体信息一目了然。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span>
+			     <span><i>¥</i> 0.5 元</span>
 			    </div>
 			 </div>
 			 </a>
@@ -109,7 +123,7 @@
 			     <p class="package-description">通过VIN(车架号)得到车辆品牌、型号、年款、排量、变速箱类型、发动机型号、几门几座等</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 1 元</span>
+			     <span><i>¥</i> 1 元</span>
 			    </div>
 			 </div>
 			 </a>
@@ -123,7 +137,7 @@
 			     <p class="package-description">输入企业名称，即可查询出该企业<font color="red">投资历史记录信息 或者 融资历史记录</font>。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 3 元</span>
+			     <span><i>¥</i> 3 元</span>
 			    </div>
 			 </div>
 			 </a>
@@ -137,7 +151,7 @@
 			     <p class="package-description">国内最大的信用黑名单数据库 <font color="red">提供企业</font>和<font color="red">个人失信、网贷逾期</font>黑名单查询(超过一千万条信贷失信记录)。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 3 元</span>
+			     <span><i>¥</i> 3 元</span>
 			    </div>
 			 </div>
 			 </a>
@@ -151,7 +165,7 @@
 			     <p class="package-description">汉字的简体、繁体、火星文转换 。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 免费</span>
+			     <span><i>¥</i> 免费</span>
 			    </div>
 			 </div>
 			 </a>
@@ -165,7 +179,7 @@
 			     <p class="package-description">查询车辆故障码，包括<font color="red">故障位置、故障描述、造成影响、和解决建议</font>。</p>
 			    </div>
 			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
-			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span>
+			     <span><i>¥</i> 0.5 元</span>
 			    </div>
 			 </div>
 			 </a>
