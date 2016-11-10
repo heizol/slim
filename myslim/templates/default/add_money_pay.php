@@ -12,19 +12,36 @@
           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">充值金额</label>
             <div class="col-sm-10">
-              <font color="red"><strong>2&nbsp;&nbsp;RMB</strong></font>
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=50'">0.5元</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=100'">1元</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=200'">2元</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=300'">3元</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=500'">5元</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=1000'">10元</button>
+              <font color="red"><strong><?php echo $money * 100;?>&nbsp;&nbsp;RMB</strong></font>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">微信二维码充值</label>
+            <div class="col-sm-10">
+              <?php 
+              require_once ROOT_PATH . "lib/wxpay/lib/WxPay.Api.php";
+              require_once ROOT_PATH . "lib/wxpay/example/WxPay.NativePay.php";
+              $notify = new NativePay();
+              // s means search
+              $product_id = date("mdHis");
+              $order_num = 100 . rand(100, 999) . 'S' . $product_id . $_SESSION['user_id'];
+              $input = new WxPayUnifiedOrder();
+              $input->SetBody("有技术的便民查询工具");
+              $input->SetAttach("有技术的便民查询工具,信息来源可以考证");
+              $input->SetOut_trade_no($order_num);
+              $input->SetTotal_fee($money);
+              $input->SetTime_start(date("YmdHis"));
+              $input->SetTime_expire(date("YmdHis", time() + 600));
+//               $input->SetGoods_tag("test");
+              $input->SetNotify_url("http://www.joinear.com/call_money_back");
+              $input->SetTrade_type("NATIVE");
+              $input->SetProduct_id($product_id);
+              $result = $notify->GetPayUrl($input);
+              $code_url = $result["code_url"];
+              ?>
+              <img alt="微信支付<?php echo $money * 100; ?>元" src="/qrcode?data=<?php echo urlencode($code_url);?>" style="width:300px;height:300px;"/>
+            </div>
+            <div>支付成功后，页面不刷新时，请手动刷新，看账号变化</div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

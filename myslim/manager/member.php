@@ -182,7 +182,7 @@ $app->group('/member', function () use ($app) {
         return $this->view->render($response, "/myorder.php", $args);
     })->setName('myorder');
     
-    // 充值
+    // 充值1
     $app->get('/add_money', function(Request $request, Response $response, $args) {
         $route = $request->getAttribute('route');
         $route_name = $route->getName();
@@ -190,10 +190,35 @@ $app->group('/member', function () use ($app) {
         $args['params'] = AuthQuery::$queries;
         $args['nameKey'] =  $request->getAttribute('csrf_name');
         $args['nameValue'] =  $request->getAttribute('csrf_value');
+        if (empty($_SESSION['user_id'])) {
+            return $response->withRedirect('/member/login');;
+        }
         
         $args['title'] = '便民查询用户充值中心';
         $args['keywords'] = '查询工具，充值中心';
         $args['description'] = '有技术的便民查询工具,如果你想要其它工具，请联系我们,所产生数据都可以得到追踪记录';
         return $this->view->render($response, "/add_money.php", $args);
     })->add($app->getContainer()->get('csrf'))->setName('add_money');
+    // 充值2
+    $app->get('/add_money_pay', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['name'] = $route_name;
+        $args['params'] = AuthQuery::$queries;
+        $args['nameKey'] =  $request->getAttribute('csrf_name');
+        $args['nameValue'] =  $request->getAttribute('csrf_value');
+        if (empty($_SESSION['user_id'])) {
+            return $response->withRedirect('/member/login');;
+        }
+        
+        $params = AuthQuery::$queries;
+        $args['money'] = $params['money'];
+        if (empty($args['money'])) {
+            return $response->withRedirect('/member/add_money');
+        }
+        $args['title'] = '便民查询用户充值中心';
+        $args['keywords'] = '查询工具，充值中心';
+        $args['description'] = '有技术的便民查询工具,如果你想要其它工具，请联系我们,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, "/add_money_pay.php", $args);
+    })->add($app->getContainer()->get('csrf'))->setName('add_money_pay');
 })->add(AuthQuery::class);
