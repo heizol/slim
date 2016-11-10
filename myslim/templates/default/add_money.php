@@ -38,39 +38,5 @@
   <?php 
   require TEMPLATE_ROOT . '/footer.php';
   ?>
-  <script type="text/javascript">
-  $(document).ready(function(){
-	  var i = 0;
-	  setInterval(function(){
-		// 每隔5秒执行一次
-		if (i == 60) {
-			window.location.reload();
-		}
-		csrf_name_key = $("#csrf_name").attr('name');
-		csrf_value_key = $("#csrf_value").attr('name');
-		csrf_name = $("#csrf_name").attr('value');
-		csrf_value = $("#csrf_value").attr('value');
-		$.ajax({
-			url : '/get_wxpay?order_num=<?php echo $order_num;?>',
-			type:'get',
-			dataType: "json",
-			headers: {
-	               'X-CSRF-Token': {
-	            	   csrf_name_key: csrf_name,
-	            	   csrf_value_key: csrf_value,
-	               }
-	           },
-	         success: function(msg) {
-					// msg = eval("(" + msg +")");
-					if (msg['status'] == 1) {
-						window.location.href='/pay_success';
-					}
-		         }
-			});
-		i ++;
-		
-	  }, 5000);
-  });
-  </script>
 </body>
 </html>
