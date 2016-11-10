@@ -41,7 +41,7 @@
 				alert('非法提交，刷新重试');
 				return false;
 			}
-			message = $.trim($("#message").val();
+			message = $.trim($("#message").val());
 			if (message != '') {
 				$.ajax({
 						url: "/more",
