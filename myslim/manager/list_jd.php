@@ -6,8 +6,6 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
 
-
-require_once ROOT_PATH . 'lib/SwaggerClient/autoload.php';
 $app->group('/listjd', function () use ($app) {
     /**
      * @desc 是否结婚
@@ -41,10 +39,9 @@ $app->group('/listjd', function () use ($app) {
             $result['msg'] = 'csrf faild';
         }else{
             $params = AuthQuery::$queries;
-            $today_time = date("Y-m-d", strtotime($params['today_time']));
-            if (empty($params['city_name']) || empty($params['today_time']) || $today_time != $params['today_time']) {
+            if (empty($params['name']) || empty($params['numberic'])) {
                 $result['status'] = -1;
-                $result['msg'] = '城市名称和时间不能为空';
+                $result['msg'] = '姓名和身份证不能为空';
             } else {
                 if (empty($_SESSION['user_id'])) {
                     $result['status'] = -1;
@@ -67,19 +64,15 @@ $app->group('/listjd', function () use ($app) {
                 $insert_columns['order_id'] = $order_num;
                 $money_result = OrderDDL::insertOrder('tools_order', $insert_columns);
                 
-                $api_instance = new wxlink\Api\DefaultApi();
-                $name = "马大帅"; // string | 用户姓名（需 utf8 编码的 urlencode）
-                $idcard = "341621199406013958"; // string | 身份证号码
-                $appkey = "appkey_example"; // string | 万象平台提供的appkey
-                
-//                 if ($money_result == false) {
-//                     $result['status'] = -1;
-//                     $result['msg'] = '用户余额不足';
-//                 } else {
-//                     $url = 'http://apis.baidu.com/netpopo/vehiclelimit/query?city='. $params['city_name'] .'&date=' . $today_time;
-//                     $result['status'] = 0;
-//                     $result['result'] = baidu_curl_get($url);
-//                 }
+                if ($money_result == false) {
+                    $result['status'] = -1;
+                    $result['msg'] = '用户余额不足';
+                } else {
+                    $url = 'https://way.jd.com/51daas/qryMultiple2Data?name='.$params['name'].'&cardNum='.$params['numberic'].'&appkey=' . JD_KEY;
+                    $get_user_info = json_decode(file_get_contents($url), true);
+                    $result['status'] = 0;
+                    $result['result'] = baidu_curl_get($url);
+                }
             }
         }
         $response->getBody()->write(json_encode($result));
