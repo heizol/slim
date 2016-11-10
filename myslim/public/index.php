@@ -173,7 +173,7 @@ $app->group('/', function () use ($app) {
                     // 订单充值记录
                     $insert_columns = array();
                     $insert_columns['product_name'] = '预消费';
-                    $insert_columns['sales'] = '2.00';
+                    $insert_columns['sales'] = ($wx_result['total_fee'] / 100);
                     $insert_columns['add_time'] = time();
                     $insert_columns['is_flag'] = 1;
                     $insert_columns['user_id'] = $user_id;
