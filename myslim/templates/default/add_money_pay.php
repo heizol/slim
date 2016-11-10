@@ -12,7 +12,7 @@
           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">充值金额</label>
             <div class="col-sm-10">
-              <font color="red"><strong><?php echo $money * 100;?>&nbsp;&nbsp;RMB</strong></font>
+              <font color="red"><strong><?php echo $money / 100;?>&nbsp;&nbsp;RMB</strong></font>
             </div>
           </div>
           <div class="form-group">
@@ -39,7 +39,7 @@
               $result = $notify->GetPayUrl($input);
               $code_url = $result["code_url"];
               ?>
-              <img alt="微信支付<?php echo $money * 100; ?>元" src="/qrcode?data=<?php echo urlencode($code_url);?>" style="width:300px;height:300px;"/>
+              <img alt="微信支付<?php echo $money / 100; ?>元" src="/qrcode?data=<?php echo urlencode($code_url);?>" style="width:300px;height:300px;"/>
             </div>
             <div>支付成功后，页面不刷新时，请手动刷新，看账号变化</div>
           </div>

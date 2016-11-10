@@ -12,18 +12,17 @@
           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">充值金额</label>
             <div class="col-sm-10">
-              <font color="red"><strong>2&nbsp;&nbsp;RMB</strong></font>
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=50'">0.5元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=50'">0.5元</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=100'">1元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=100'">1元</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=200'">2元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=200'">2元</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=300'">3元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=300'">3元</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=500'">5元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=500'">5元</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/add_money_pay?money=1000'">10元</button>
+              <button type="button" class="btn btn-default btn-lg" onclick="javascript:window.location.href='/member/add_money_pay?money=1000'">10元</button>
             </div>
           </div>
           <div class="form-group">
