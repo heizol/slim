@@ -8,7 +8,6 @@ use Zend\Db\Sql\Insert;
 
 
 require_once ROOT_PATH . 'lib/SwaggerClient/autoload.php';
-
 $app->group('/listjd', function () use ($app) {
     /**
      * @desc 是否结婚

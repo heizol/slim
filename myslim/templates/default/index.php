@@ -71,7 +71,7 @@
 <!-- 			     <span><i class="glyphicon glyphicon-usd"></i> 0.5 元</span> -->
 <!-- 			    </div> -->
 <!-- 			 </div> -->
-<!-- 			 </a> -->
+<!-- 			 </a> 
 			<a class="package list-group-item" target="_blank" data-library-name="婚姻和学历查询" href="/listjd/s_marrid">
 			 <div class="row">
 			    <div class="col-md-3">
@@ -85,7 +85,7 @@
 			    </div>
 			 </div>
 			 </a>
-			 
+			 -->
 			 <a class="package list-group-item" target="_blank" data-library-name="车辆尾号限行查询" href="/list/car_number">
 			 <div class="row">
 			    <div class="col-md-3">
