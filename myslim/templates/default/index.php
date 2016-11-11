@@ -88,6 +88,20 @@
 			 </div>
 			 </a>
 			 -->
+			 <a class="package list-group-item" target="_blank" data-library-name="全国性民间组织查询" href="/list/car_number">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">全国性民间组织查询</h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description"> 根据组织名称查询组织的真实性，提供<font color="red">社会团体、民办非企业单位、基金会、境外基金会代表机构、国际性社团、外国商会、涉外基金会</font>查询，本工具搜索出来数据有法律效应。</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i>¥</i> 0.5 元</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <a class="package list-group-item" target="_blank" data-library-name="车辆尾号限行查询" href="/list/car_number">
 			 <div class="row">
 			    <div class="col-md-3">
