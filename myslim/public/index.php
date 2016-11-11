@@ -99,7 +99,13 @@ $app->group('/', function () use ($app) {
                 $result['status'] = -1;
                 $result['msg'] = '留言内容不能为空';
             } else {
-                
+                $insert_columns = array();
+                $insert_columns['uid'] = empty($_SESSION['uid']) ? 0 : $_SESSION['uid'];
+                $insert_columns['add_time'] = time();
+                $insert_columns['message'] = $params['message'];
+                OrderDDL::insertOrder('user_message', $insert_columns);
+                $result['status'] = 1;
+                $result['msg'] = '感谢您的留言，我们会尽快回复';
             }
         }
         $response->getBody()->write(json_encode($result));

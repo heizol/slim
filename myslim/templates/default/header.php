@@ -37,6 +37,8 @@
 	    <?php 
 	       }
 	    ?>
+	    &nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a href="http://about.joinear.com">关于我们</a>
 	   </div>
 	   <div class="container">
 	    <div class="row">
