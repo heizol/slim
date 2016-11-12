@@ -50,7 +50,7 @@
 				return false;
 			}
 			company_name = $.trim($("#company_name").val());
-			if (flag_ip != undefined && flag_ip != '') {
+			if (company_name != undefined && company_name != '') {
 				$.ajax({
 						url: "/listjd/company_true",
 						method: "post",
