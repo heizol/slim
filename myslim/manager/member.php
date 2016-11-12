@@ -123,10 +123,10 @@ $app->group('/member', function () use ($app) {
                     $req = new AlibabaAliqinFcSmsNumSendRequest;
                     $req->setExtend("");
                     $req->setSmsType("normal");
-                    $req->setSmsFreeSignName("身份验证");
-                    $req->setSmsParam("{\"code\":\"". $code ."\",\"product\":\"【有技术的便民查询】\"}");
+                    $req->setSmsFreeSignName("有技术的便民查询");
+                    $req->setSmsParam("{\"code\":\"". $code ."\"}");
                     $req->setRecNum($params['mobile']);
-                    $req->setSmsTemplateCode("SMS_11320047");
+                    $req->setSmsTemplateCode("SMS_25630499");
                     $resp = $m->execute($req);
                     
                     if (!empty($resp)) {

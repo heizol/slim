@@ -71,7 +71,7 @@
 							} else {
 								$(".show_result").show();
 								$("#show_ip").html("[" + $("#company_name").val() + "] 查询结果如下：");
-								$("#show_html").html(result['company_html']);
+								$("#show_html").html(result['msg']);
 							}
 						},
 					    error: function(e)  {
