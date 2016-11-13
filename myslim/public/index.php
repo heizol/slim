@@ -273,7 +273,9 @@ class OrderDDL {
      */
     static function insertOrder($table = 'tools_order', $params) {
         $db = new CustomDb();
-        $artistTable = new TableGateway('tools_user', $db->_adapter);
+        $artistTable = new TableGateway($table, $db->_adapter);
+
+	if (!empty($params['user_id'])) {
         $rowset = $artistTable->select(function (Select $select) use ($params){
             $select->where(['id' => $params['user_id']])->order('id DESC');
         });
@@ -284,9 +286,11 @@ class OrderDDL {
         $my_money = $_user[false]['my_money'];
         
         // 金额不够
+        ecgi $params['sales'] . '===';
         if ($my_money <= 0 && $params['is_flag'] == 2 && $params['sales'] > 0) {
             return false;
         }
+	echo '==';
         // 金额不够本次消费
         if ($params['is_flag'] == 2 && $params['sales'] > $my_money) {
             return false;
@@ -296,12 +300,15 @@ class OrderDDL {
         if ($params['is_flag'] == 2 && $mins < 0) {
             return false;
         }
+	
+	}
         $artistTable = new TableGateway($table, $db->_adapter);
         $insert_r = $artistTable->insert($params);
 	// 记录ID
         $log_id = $artistTable->getLastInsertValue();
 	   if (!empty($log_id)) {
-           $update_params = array();
+        	if (!empty($params['user_id'])) {
+	   $update_params = array();
 	       $artistTable = new TableGateway('tools_user', $db->_adapter);
             if ($params['is_flag'] == 2) {
                 // 消费时要扣除金额
@@ -311,6 +318,7 @@ class OrderDDL {
             }
             $artistTable->update($update_params, ['id' => $_user[false]['id']]);
             $_SESSION['my_money'] = $update_params['my_money'];
+		}
             return true;
     	} else {
     		return false;
