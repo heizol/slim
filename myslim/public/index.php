@@ -273,24 +273,21 @@ class OrderDDL {
      */
     static function insertOrder($table = 'tools_order', $params) {
         $db = new CustomDb();
-        $artistTable = new TableGateway($table, $db->_adapter);
-
 	if (!empty($params['user_id'])) {
+        $artistTable = new TableGateway('tools_user', $db->_adapter);
         $rowset = $artistTable->select(function (Select $select) use ($params){
             $select->where(['id' => $params['user_id']])->order('id DESC');
         });
         $_user = $rowset->toArray();
-	    if (empty($_user)) {
+	if (empty($_user)) {
             return false;
         }
         $my_money = $_user[false]['my_money'];
         
         // 金额不够
-        ecgi $params['sales'] . '===';
         if ($my_money <= 0 && $params['is_flag'] == 2 && $params['sales'] > 0) {
             return false;
         }
-	echo '==';
         // 金额不够本次消费
         if ($params['is_flag'] == 2 && $params['sales'] > $my_money) {
             return false;
