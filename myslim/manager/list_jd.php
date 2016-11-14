@@ -31,7 +31,7 @@ $app->group('/listjd', function () use ($app) {
         $args['keywords'] = '朋友是否已婚,已婚查询,婚姻查询,婚姻经历查询';
         $args['description'] = '有技术的便民查询工具,专业查询朋友是否已婚,已婚查询,婚姻查询,婚姻经历查询询,所产生数据都可以得到追踪记录';
         return $this->view->render($response, '/listjd_marrid.php', $args);
-    })->add($app->getContainer()->get('csrf'))->setName('list_cart_number');
+    })->add($app->getContainer()->get('csrf'))->setName('list_s_marrid');
     
     $app->post('/s_marrid', function(Request $request, Response $response, $args) {
         if (false === $request->getAttribute('csrf_status')) {
@@ -80,7 +80,7 @@ $app->group('/listjd', function () use ($app) {
             'Content-Type',
             'application/json'
             );
-    })->setName('car_number');
+    })->setName('s_marrid');
     
     // 企业组织查询
     $app->get('/company_true', function(Request $request, Response $response, $args) {
@@ -104,7 +104,7 @@ $app->group('/listjd', function () use ($app) {
         $args['keywords'] = '全国性民间组织查询,基金会查询,校友会查询,商会查询,社会团体查询,代表机构查询';
         $args['description'] = '有技术的便民查询工具,专业查询全国性民间组织,基金会查询,校友会查询,商会查询,社会团体查询,代表机构查询,所产生数据都可以得到追踪记录';
         return $this->view->render($response, '/list_company_true.php', $args);
-    })->add($app->getContainer()->get('csrf'))->setName('list_cart_number');
+    })->add($app->getContainer()->get('csrf'))->setName('list_company_true');
     
     $app->post('/company_true', function(Request $request, Response $response, $args) {
         if (false === $request->getAttribute('csrf_status')) {
@@ -166,5 +166,29 @@ $app->group('/listjd', function () use ($app) {
             'Content-Type',
             'application/json'
             );
-    })->setName('car_number');
+    })->setName('company_true');
+    
+    // 全国百佳医院排行榜
+    $app->get('/hospital', function(Request $request, Response $response, $args) {
+        $route = $request->getAttribute('route');
+        $route_name = $route->getName();
+        $args['route_name'] = $route_name;
+        // CSRF token name and value
+        $args['params'] = AuthQuery::$queries;
+        $nameKey = $this->csrf->getTokenNameKey();
+        $valueKey = $this->csrf->getTokenValueKey();
+    
+        // Fetch CSRF token name and value
+        $name  = $request->getAttribute($nameKey);
+        $value = $request->getAttribute($valueKey);
+        $args['csrf_name_key']  = $nameKey;
+        $args['csrf_value_key'] = $valueKey;
+    
+        $args['csrf_name'] = $name;
+        $args['csrf_value'] = $value;
+        $args['title'] = '全国百佳医院排行榜';
+        $args['keywords'] = '全国百佳医院排行榜,全国最好的医院,呼吸科最好的医院,耳鼻喉科最好的医院,神经内科最好的医院,小儿最好的医院,肿瘤最好的医院,医院排行榜';
+        $args['description'] = '有技术的便民查询工具,专业查询全国百佳医院排行榜,全国最好的医院,呼吸科最好的医院,耳鼻喉科最好的医院,神经内科最好的医院,小儿最好的医院,肿瘤最好的医院,医院排行榜,所产生数据都可以得到追踪记录';
+        return $this->view->render($response, '/hospital.php', $args);
+    })->add($app->getContainer()->get('csrf'))->setName('list_hospital');
 })->add(AuthQuery::class);
