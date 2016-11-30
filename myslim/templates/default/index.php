@@ -88,6 +88,20 @@
 			 </div>
 			 </a>
 			 -->
+			 <a class="package list-group-item" target="_blank" data-library-name="全国最好的医院排名查询" href="/listjd/hospital">
+			 <div class="row">
+			    <div class="col-md-3">
+			     <h4 class="package-name">全国最好的医院排名查询</h4>
+			    </div>
+			    <div class="col-md-9 hidden-xs">
+			     <p class="package-description">排行榜的评审专家来自中华医学会和医师学会，涉及37个临床专科，向3969位专家发挂号信，收到有效回执2490份（每年有所变动）。排行榜的数据真实有效</p>
+			    </div>
+			    <div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12">
+			     <span><i>¥</i> 免费</span>
+			    </div>
+			 </div>
+			 </a>
+			 
 			 <a class="package list-group-item" target="_blank" data-library-name="全国性民间组织查询" href="/listjd/company_true">
 			 <div class="row">
 			    <div class="col-md-3">
