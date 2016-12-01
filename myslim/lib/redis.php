@@ -94,7 +94,7 @@
 			if (!$this->_cluster) {
 				$this->_initConn();
 			}			
-			return $this->_cluster->client('slave')->get($key);
+			return $this->_cluster->client('master')->get($key);
 		}
 		public function del($key) {
 			if (!$this->_cluster) {
@@ -210,5 +210,11 @@
 		    return $this->_cluster->client('slave')->ttl( $key);
 		}
 
+		public function auth(string $key) {
+		    if (!$this->_cluster) {
+		        $this->_initConn();
+		    }
+		    return $this->_cluster->client('master')->auth( $key);
+		}
 	}
 ?>
