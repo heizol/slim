@@ -4,8 +4,10 @@
 */
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
-require  '../lib/dayu/TopSdk.php';
-require  '../lib/redis.php';
+define('ROOT_PATH', dirname(__FILE__) . '/../');
+require ROOT_PATH . 'lib/config.php';
+require  ROOT_PATH . 'lib/dayu/TopSdk.php';
+require  ROOT_PATH . 'lib/redis.php';
 $url = "http://www.51duoying.com/xintuo/list";
 //初始化
 $ch = curl_init();
