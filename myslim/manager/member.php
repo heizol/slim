@@ -42,6 +42,7 @@ $app->group('/member', function () use ($app) {
             $result['msg'] = 'csrf faild';
         }else{
             $redis = new CustomRedis();
+            $redis->auth('redis123!@#');
             $db = new CustomDb();
             $params = AuthQuery::$queries;
             if (empty($params['mobile'])) {
@@ -110,6 +111,7 @@ $app->group('/member', function () use ($app) {
                 $result['msg'] = '手机号格式不正确';
             } else {
                 $redis = new CustomRedis();
+                $redis->auth('redis123!@#');
                 if (!empty($redis->get('code_' . $params['mobile']))) {
                     $result['status'] = -1;
                     $result['msg'] = '已发送，剩余有效期['.$redis->ttl('code_' . $params['mobile']).'秒]';
