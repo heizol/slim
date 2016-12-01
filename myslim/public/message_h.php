@@ -24,6 +24,7 @@ if (!empty($_html_page)) {
         foreach ($match_all[true] as $key => $info) {
             $_temp_match = array();
             preg_match_all('/<div class="circle_num hide">60<\/div>/i', $info, $_temp_match);
+            print_r($_temp_match);
             if (!empty($_temp_match[false][false])) {
                 echo 'helloworld';
                 preg_match_all('/信托•理财通(.*?)期/i', $info, $_temp_match);
