@@ -11,12 +11,12 @@
 			if (ENVIRONMENT == 'production') {
 				$this->_servers = array(
 					array(
-							'host'=>'10.25.30.234',
+							'host'=>'127.0.0.1',
 							'port'=>'6379',
 							'alias'=>'master',
 					),
 					array(
-							'host'=>'10.25.30.234',
+							'host'=>'127.0.0.1',
 							'port'=>'6379',
 							'alias'=>'slave',
 					),
