@@ -48,7 +48,7 @@ if (!empty($_html_page)) {
                     $req->setSmsType("normal");
                     $req->setSmsFreeSignName("猜猜我是谁");
                     $req->setSmsParam("{\"code\":\"90%\",\"name\":\"信托.理财通".$_temp_match[true][false]."期\"}");
-                    $req->setRecNum("18936309997");
+                    $req->setRecNum("18516235282");
                     $req->setSmsTemplateCode("SMS_31755010");
                     $resp = $c->execute($req);
                 }
