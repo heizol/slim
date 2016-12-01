@@ -38,7 +38,8 @@ if (!empty($_html_page)) {
                 }
                 $_get_key = $_redis->get('key_' . $_temp_match[true][false] . '_step-1');
                 if (empty($_get_key)) {
-                    $_redis->set('key_' . $_temp_match[true][false] . '_step-1', 1);
+                    $get_time = date("Y-m-d H:i:s");
+                    $_redis->set('key_' . $_temp_match[true][false] . '_step-1', $get_time);
                     // send msg
                     $c = new TopClient;
                     $c->appkey = '23397317';
@@ -61,7 +62,8 @@ if (!empty($_html_page)) {
                 }
                 $_get_key = $_redis->get('key_' . $_temp_match[true][false] . '_step-2');
                 if (empty($_get_key)) {
-                    $_redis->set('key_' . $_temp_match[true][false] . '_step-2', 1);
+                    $get_time = date("Y-m-d H:i:s");
+                    $_redis->set('key_' . $_temp_match[true][false] . '_step-2', $get_time);
                     // send msg
                     $c = new TopClient;
                     $c->appkey = '23397317';
@@ -85,7 +87,8 @@ if (!empty($_html_page)) {
                 }
                 $_get_key = $_redis->get('key_' . $_temp_match[true][false] . '_step-3');
                 if (empty($_get_key)) {
-                    $_redis->set('key_' . $_temp_match[true][false] . '_step-3', 1);
+                    $get_time = date("Y-m-d H:i:s");
+                    $_redis->set('key_' . $_temp_match[true][false] . '_step-3', $get_time);
                     // send msg
                     $c = new TopClient;
                     $c->appkey = '23397317';
@@ -110,7 +113,8 @@ if (!empty($_html_page)) {
                 }
                 $_get_key = $_redis->get('key_' . $_temp_match[true][false] . '_step-4');
                 if (empty($_get_key)) {
-                    $_redis->set('key_' . $_temp_match[true][false] . '_step-4', 1);
+                    $get_time = date("Y-m-d H:i:s");
+                    $_redis->set('key_' . $_temp_match[true][false] . '_step-4', $get_time);
                     // send msg
                     $c = new TopClient;
                     $c->appkey = '23397317';
