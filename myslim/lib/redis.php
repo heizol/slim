@@ -210,7 +210,7 @@
 		    return $this->_cluster->client('slave')->ttl( $key);
 		}
 
-		public function auth(string $key) {
+		public function auth($key) {
 		    if (!$this->_cluster) {
 		        $this->_initConn();
 		    }
