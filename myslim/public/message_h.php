@@ -1,5 +1,4 @@
 <?php
-header("Content-type: text/html; charset=utf-8");
 /**
 * @desc  得到已卖数据
 */
@@ -24,8 +23,9 @@ if (!empty($_html_page)) {
     if (!empty($match_all[true])) {
         foreach ($match_all[true] as $key => $info) {
             $_temp_match = array();
-            preg_match_all('/<div class="circle_num hide">90<\/div>/i', $info, $_temp_match);
+            preg_match_all('/<div class="circle_num hide">60<\/div>/i', $info, $_temp_match);
             if (!empty($_temp_match[false][false])) {
+                echo 'helloworld';
                 preg_match_all('/信托•理财通(.*?)期/i', $info, $_temp_match);
                 if (empty($_temp_match[true])) {
                     continue;
@@ -41,8 +41,8 @@ if (!empty($_html_page)) {
                     $req->setExtend("123456");
                     $req->setSmsType("normal");
                     $req->setSmsFreeSignName("猜猜我是谁");
-                    $req->setSmsParam("{\"code\":\"90%\",\"name\":\"信托.理财通".$_temp_match[true][false]."期\"}");
-                    $req->setRecNum("18516235282");
+                    $req->setSmsParam("{\"code\":\"60%\",\"name\":\"信托.理财通".$_temp_match[true][false]."期\"}");
+                    $req->setRecNum("18936309997");
                     $req->setSmsTemplateCode("SMS_31755010");
                     $resp = $c->execute($req);
                 }
