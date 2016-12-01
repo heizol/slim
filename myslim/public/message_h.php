@@ -2,8 +2,10 @@
 /**
 * @desc  得到已卖数据
 */
-require ROOT_PATH . 'lib/dayu/TopSdk.php';
-require ROOT_PATH . 'lib/redis.php';
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+require  '../lib/dayu/TopSdk.php';
+require  '../lib/redis.php';
 $url = "http://www.51duoying.com/xintuo/list";
 //初始化
 $ch = curl_init();
@@ -20,6 +22,7 @@ if (!empty($_html_page)) {
     $_html_page = str_replace("\r\n", "", $_html_page);
     $_html_page = str_replace("\t", "", $_html_page);
     preg_match_all('/<li class="item"><div class="case">(.*?)<\/div><\/li>/i', $_html_page, $match_all);
+    
     if (!empty($match_all[true])) {
         foreach ($match_all[true] as $key => $info) {
             $_temp_match = array();
