@@ -21,6 +21,7 @@ $_html_page = curl_exec($ch);
 //释放curl句柄
 if (!empty($_html_page)) {
     $_redis = new CustomRedis();
+    $_redis->auth('redis123!@#');
     $_html_page = str_replace("\r\n", "", $_html_page);
     $_html_page = str_replace("\t", "", $_html_page);
     preg_match_all('/<li class="item"><div class="case">(.*?)<\/div><\/li>/i', $_html_page, $match_all);

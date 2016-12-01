@@ -48,7 +48,6 @@
 //			$cluster->set('key','value'.time());
 //			echo "Alpha: ".$cluster->client('slave')->get('key');
 			$this->_cluster = $cluster;
-			$this->_cluster->client('master')->auth('redis123!@#');
 //          $this->adsf();
 		}		
 		public function getConnection() {	
