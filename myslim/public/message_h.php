@@ -28,7 +28,7 @@ if (!empty($_html_page)) {
     if (!empty($match_all[true])) {
         foreach ($match_all[true] as $key => $info) {
             $_temp_match = array();
-            preg_match_all('/<div class="circle_num hide">60<\/div>/i', $info, $_temp_match);
+            preg_match_all('/<div class="circle_num hide">61<\/div>/i', $info, $_temp_match);
             print_r($_temp_match);
             if (!empty($_temp_match[false][false])) {
                 echo 'helloworld';
