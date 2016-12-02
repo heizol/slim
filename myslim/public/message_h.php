@@ -29,9 +29,8 @@ if (!empty($_html_page)) {
     if (!empty($match_all[true])) {
         foreach ($match_all[true] as $key => $info) {
             $_temp_match = array();
-            preg_match_all('/<div class="circle_num hide">90<\/div>/i', $info, $_temp_match);
-            if (!empty($_temp_match[false][false])) {
-                echo 'helloworld';
+            preg_match_all('/<div class="circle_num hide">(\d{2})<\/div>/i', $info, $_temp_match);
+            if (!empty($_temp_match[true][false]) && $_temp_match[false][false] >= 90) {
                 preg_match_all('/信托•理财通(.*?)期/i', $info, $_temp_match);
                 if (empty($_temp_match[true])) {
                     continue;
